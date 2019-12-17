@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const keys = require("./config/keys");
 
 // Initialise express app
 const app = express();
@@ -11,8 +12,24 @@ app.use(
     extended: false
   })
 );
-
 app.use(bodyParser.json());
+
+// Add database connection
+const db = keys.mongoURI;
+mongoose
+  .connect(
+    db,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }
+  )
+  .then(res => {
+    console.log("Database connected successfully!");
+  })
+  .catch(error => {
+    console.log(error);
+  });
 
 // Add port
 const PORT = process.env.PORT || 5010;
