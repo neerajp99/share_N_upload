@@ -5,6 +5,8 @@ const path = require("path");
 const keys = require("./config/keys");
 // import multer for storage
 const multer = require("multer");
+// import routes
+const appRoute = require('./routes/api/appRoute')
 
 // Initialise express app
 const app = express();
@@ -18,7 +20,7 @@ app.use(
 app.use(bodyParser.json());
 
 //Multer storage directory
-const directory = path.join(__dirname, "..", "storage");
+const storageDirectory = path.join(__dirname, "..", "storage");
 
 // Multer - File Storage configuration
 // The disk storage engine gives you full control on storing files to disk.
@@ -26,7 +28,7 @@ const directory = path.join(__dirname, "..", "storage");
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, directory);
+    cb(null, storageDirectory);
   },
   filename: (req, file, cb) => {
     // returns the extension of a file path.
@@ -35,7 +37,14 @@ const storage = multer.diskStorage({
   }
 });
 // add the destination to multer
-const upload = multer({ storage: destination });
+const upload = multer({ 'storageDirectory': storageDirectory });
+
+// storing names to the values
+app.set("storageSirectory", storageDirectory);
+app.set("upload", upload);
+
+// Use routing
+app.use('/api/appRoute', appRoute)
 
 // Add database connection
 const db = keys.mongoURI;
@@ -59,3 +68,5 @@ const PORT = process.env.PORT || 5010;
 app.listen(PORT, () => {
   console.log(`App is listening on port ${PORT}`);
 });
+
+module.exports = app;
