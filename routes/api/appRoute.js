@@ -6,6 +6,9 @@ const { version } = require("../../package.json");
 const multer = require("multer");
 const path = require("path");
 
+// Bring in File Model
+const Files = require("../../models/Files");
+
 //Multer storage directory
 const storageDirectory = path.join(__dirname, "..", "uploadFiles");
 
@@ -24,7 +27,7 @@ const storage = multer.diskStorage({
   }
 });
 // add the destination to multer
-const upload = multer({ storages: storage });
+const upload = multer({ storage: storage });
 
 // @route GET /api/appRoute/
 // @description Get
@@ -42,10 +45,22 @@ router.get("/", (req, res) => {
 router.post("/upload", upload.array("files"), (req, res, next) => {
   // req.files is array of `photos` files
   // req.body will contain the text fields, if there were any
-  console.log("Received files", req.files);
-  return res.status(200).json({
-    files: req.files
+
+  // console.log(req.files[0].mimetype)
+  const newFile = new Files({
+    fileName: req.files[0].filename,
+    originalName: req.files[0].originalname,
+    mimetype: req.files[0].mimetype,
+    size: req.files[0].size
   });
+  newFile
+    .save()
+    .then(file => {
+      return res.status(200).json(newFile);
+    })
+    .catch(error => {
+      res.json(error);
+    });
 });
 
 // @route GET /api/appRoute/
@@ -53,7 +68,7 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
 // @access Public
 router.get("/download/:filename", (req, res) => {
   const filePath = path.join(storageDirectory, req.params.filename);
-  return res.download(filePath, req.params.filename, error => {
+  return res.donwload(filePath, req.params.filename, error => {
     if (error) {
       return res.status(400).json(error);
     } else {
