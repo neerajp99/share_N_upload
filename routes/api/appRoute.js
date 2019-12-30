@@ -46,21 +46,24 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
   // req.files is array of `photos` files
   // req.body will contain the text fields, if there were any
 
-  // console.log(req.files[0].mimetype)
-  const newFile = new Files({
-    fileName: req.files[0].filename,
-    originalName: req.files[0].originalname,
-    mimetype: req.files[0].mimetype,
-    size: req.files[0].size
-  });
-  newFile
-    .save()
-    .then(file => {
-      return res.status(200).json(newFile);
-    })
-    .catch(error => {
-      res.json(error);
+  // console.log(req.files)
+  for (let i = 0; i < req.files.length; i++) {
+    const newFile = new Files({
+      fileName: req.files[i].filename,
+      originalName: req.files[i].originalname,
+      mimetype: req.files[i].mimetype,
+      size: req.files[i].size
     });
+    newFile
+      .save()
+      .then(file => {
+        console.log('success!')
+        return res.status(200).json(newFile);
+      })
+      .catch(error => {
+        res.json(error);
+      });
+  }
 });
 
 // @route GET /api/appRoute/
