@@ -6,10 +6,13 @@ const keys = require("./config/keys");
 // import multer for storage
 const multer = require("multer");
 // import routes
-const appRoute = require('./routes/api/appRoute')
+const appRoute = require("./routes/api/appRoute");
 
 // Initialise express app
 const app = express();
+
+// Bring in cors
+const cors = require("cors");
 
 // Add body-parser middleware to get body details
 app.use(
@@ -18,6 +21,24 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+
+// Use cors
+app.use(cors());
+app.use((request, response, next) => {
+  response.header("Access-Control-Allow-Origin", "*");
+  response.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  response.header(
+    "Access-Control-Allow-Headers",
+    "Content-type, Accept, x-access-token, X-Key"
+  );
+  response.header("Access-Control-Allow-Credentials", true);
+  credentials: "same-origin";
+  if (request.method == "OPTIONS") {
+    response.status(200).end();
+  } else {
+    next();
+  }
+});
 
 //Multer storage directory
 const storageDirectory = path.join(__dirname, "..", "storage");
@@ -37,14 +58,14 @@ const storage = multer.diskStorage({
   }
 });
 // add the destination to multer
-const upload = multer({ 'storageDirectory': storageDirectory });
+const upload = multer({ storageDirectory: storageDirectory });
 
 // storing names to the values
 app.set("storageSirectory", storageDirectory);
 app.set("upload", upload);
 
 // Use routing
-app.use('/api/appRoute', appRoute)
+app.use("/api/appRoute", appRoute);
 
 // Add database connection
 const db = keys.mongoURI;
