@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import upload from "../utils/img/upload.png";
 import InputGroup from "./common/InputField";
 import TextAreaFieldGroup from "./common/TextAreaFieldGroup";
+import { uploadFile } from "../upload/UploadFile";
 
 class Landing extends Component {
   state = {
@@ -10,6 +11,11 @@ class Landing extends Component {
     message: "",
     files: []
   };
+
+  // lifecycle Method
+  componentDidMount() {
+    // console.log('STATE', this.state)
+  }
 
   // On change method to change the state
   onChange = event => {
@@ -21,6 +27,9 @@ class Landing extends Component {
   // On Submit method to submit the form
   onSubmit = event => {
     event.preventDefault();
+    uploadFile(this.state, callback => {
+      console.log("Upload callback", callback);
+    });
   };
 
   // Method when file is added
@@ -41,7 +50,7 @@ class Landing extends Component {
     //   console.log('jajaj')
     // })
 
-    console.log(this.state);
+    console.log(this.state.files);
   };
 
   // Delete items on click
@@ -87,9 +96,16 @@ class Landing extends Component {
                       onChange={this.onChangeFile}
                     />
                     <i className="fa fa-upload" aria-hidden="true" />
-                    <span className="man_form_top_file_upload">
-                      Upload Files Here
-                    </span>
+                    {this.state.files.length == 0 && (
+                      <span className="man_form_top_file_upload">
+                        Upload Files Here
+                      </span>
+                    )}
+                    {this.state.files.length > 0 && (
+                      <span className="man_form_top_file_upload">
+                        Add More Files
+                      </span>
+                    )}
                   </label>
                 </div>
               </div>
