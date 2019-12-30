@@ -7,6 +7,7 @@
     "body-parser": "^1.19.0",
     "classnames": "^2.2.6",
     "concurrently": "^4.1.1",
+    "cors": "^2.8.5",
     "create-react-app": "^3.3.0",
     "express": "^4.17.1",
     "mongoose": "^5.8.1",
@@ -16,7 +17,11 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "nodemon app.js"
+    "start": "npm app.js",
+    "app": "nodemon app.js",
+    "client-install": "npm install --prefix client",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run app\" \"npm run client\""
   },
   "repository": {
     "type": "git",
