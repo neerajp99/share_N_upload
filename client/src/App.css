@@ -161,7 +161,7 @@ select:focus,
   outline: 0 !important;
 }
 .upload_files_selected {
-  max-height: 20vh;
+  max-height: 13vh;
   overflow-y: auto;
   height: auto;
   position: relative !important;
@@ -191,4 +191,84 @@ select:focus,
 }
 .upload_files_selected_content_remove > i {
   color: #283d41;
+}
+
+/* Uploading page css goes here */
+.uploading_form {
+  background: #fff;
+  border-radius: 5px;
+  width: 30vw;
+  height: 75vh;
+  margin: 0 auto;
+  margin-top: 15%;
+}
+.image_upload {
+  height: 15vh;
+  margin-top: 5vh;
+}
+.center_items_uploading {
+  width: 20vw;
+  margin: 0 auto;
+}
+.uploading_heading {
+  font-family: "Nunito", serif;
+  font-size: 20px;
+  margin-top: 13vh;
+  color: #283d41;
+  font-weight: 600;
+}
+.uploading_subheading {
+  font-family: "Nunito", serif;
+  margin-top: 5vh;
+  text-align: left;
+  font-size: 17px;
+}
+.uploading_downcontent {
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  /* width: 20vw; */
+  margin: 0 auto;
+  margin-right: 0vw;
+  margin-top: 4vh;
+  font-size: 16px;
+  font-family: "Nunito", serif;
+}
+.uploading_downcontent_left {
+  flex-grow: 1;
+}
+.uploading_cancel_button {
+  margin-top: 6vh;
+  background: #283d41 !important;
+  outline: none !important;
+  border: 0px !important;
+  font-family: "Nunito", serif;
+  line-height: 2 !important;
+}
+.MuiLinearProgress-root {
+  height: 1.2vh !important;
+  border-radius: 5px;
+  margin-top: 3vh;
+}
+/* .MuiLinearProgress-dashedColorSecondary {
+  background-size: 10px 10px;
+  background-image: radial-gradient(
+    rgba(40, 61, 65, 0.76) 0%,
+    rgb(50, 84, 90) 16%,
+    transparent 42%
+  ) !important;
+  background-position: 0px -23px;
+  margin-top: 2px !important;
+} */
+.MuiLinearProgress-barColorSecondary {
+  background-color: #283d41 !important;
+}
+.MuiLinearProgress-barColorPrimary {
+  background-color: #283d41 !important;
+}
+.MuiLinearProgress-colorSecondary {
+  background-color: rgba(40, 61, 65, 0.76) !important;
+}
+.MuiLinearProgress-colorPrimary {
+  background-color: rgba(49, 91, 99, 0.64) !important;
 }
