@@ -20,10 +20,10 @@ export const uploadFile = (uploadForm, callback = () => {}) => {
 
   // Configuration object to return payload information
   const configuration = {
-    uploadProgress: event => {
+    onUploadProgress: event => {
       console.log("upload", event);
       return callback({
-        type: "uploadProgress",
+        type: "onUploadProgress",
         payload: event
       });
     }
