@@ -35,7 +35,10 @@ class UploadForm extends Component {
     }
     // When dubmit form is called, initiate the uploadFile method
     uploadFile(this.state, callback => {
-      console.log("Upload callback", callback);
+      // console.log("Upload callback", callback);
+      if (this.props.uploading) {
+        this.props.uploading(callback);
+      }
     });
   };
 
@@ -143,7 +146,8 @@ class UploadForm extends Component {
 
 // Prop-types goes here
 UploadForm.propTypes = {
-  onUpload: PropTypes.func
+  onUpload: PropTypes.func,
+  uploading: PropTypes.func
 };
 
 export default UploadForm;
