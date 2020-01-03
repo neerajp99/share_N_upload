@@ -9,7 +9,8 @@ import Uploading from "./Uploading";
 
 class Landing extends Component {
   state = {
-    contentState: "UploadForm"
+    contentState: "UploadForm",
+    uploadFormData: null
   };
 
   // Function to show the before and while uploading content
@@ -18,22 +19,24 @@ class Landing extends Component {
       case "UploadForm":
         return (
           <UploadForm
-            onUpload={uploadForm => {
-              console.log("Form data to upload", uploadForm);
+            onUpload={uploadFormData => {
+              console.log("Form data to upload", uploadFormData);
               this.setState({
+                uploadFormData: uploadFormData,
                 contentState: "Uploading"
               });
             }}
           />
         );
       case "Uploading":
-        return <Uploading />;
+        return <Uploading uploadFormData={this.state.uploadFormData} />;
       default:
         return (
           <UploadForm
-            onUpload={uploadForm => {
-              console.log("Form data to upload", uploadForm);
+            onUpload={uploadFormData => {
+              console.log("Form data to upload", uploadFormData);
               this.setState({
+                uploadFormData: uploadFormData,
                 contentState: "Uploading"
               });
             }}
