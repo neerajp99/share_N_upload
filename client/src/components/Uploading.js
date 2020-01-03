@@ -20,7 +20,7 @@ class Uploading extends Component {
   // getDerivedStateFromProps lifecycle method to update state
   static getDerivedStateFromProps(nextProps, prevState) {
     const { uploadFormData, uploadingDetails } = nextProps;
-    console.log("UPLOADDD", uploadingDetails);
+    // console.log("UPLOADDD", uploadingDetails);
     let currentData;
     if (uploadingDetails !== null) {
       if (uploadingDetails.type === "onUploadProgress") {
@@ -35,27 +35,17 @@ class Uploading extends Component {
         };
       }
     }
-    console.log(prevState.completed, "%");
+    // console.log(prevState.completed, "%");
 
     return {
       uploadFormData: nextProps.uploadFormData,
       uploadingDetails: nextProps.uploadingDetails,
       currentSpeed:
         prevState.dataLoaded !== 0
-          ? (
-              ((prevState.dataLoaded) /
-                (new Date() - prevState.newTime)) *
-              1024/1000
-            ).toFixed(1)
+          ? (prevState.dataLoaded / (new Date() - prevState.newTime)).toFixed(1)
           : 0,
-      totalData:
-        currentData !== undefined
-          ? Math.round(currentData.payload.total / 1024)
-          : 0,
-      dataLoaded:
-        currentData !== undefined
-          ? Math.round(currentData.payload.loaded / 1024)
-          : 0,
+      totalData: currentData !== undefined ? currentData.payload.total : 0,
+      dataLoaded: currentData !== undefined ? currentData.payload.loaded : 0,
       completed:
         currentData !== undefined
           ? (currentData.payload.loaded / currentData.payload.total) * 100
@@ -80,7 +70,8 @@ class Uploading extends Component {
 
             <div className="uploading_downcontent">
               <div className="uploading_downcontent_left">
-                {this.state.dataLoaded} Kb / {this.state.totalData} Kb
+                {(this.state.dataLoaded / 1000).toFixed(1)} Kb /{" "}
+                {(this.state.totalData / 1000).toFixed(1)} Kb
               </div>
               <div className="uploading_downcontent_right">
                 {this.state.currentSpeed}K/s
