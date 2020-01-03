@@ -9,6 +9,9 @@ const path = require("path");
 // Bring in File Model
 const Files = require("../../models/Files");
 
+// Bring in FileDetails Model
+const FileDetails = require("../../models/FileDetails");
+
 //Multer storage directory
 const storageDirectory = path.join(__dirname, "..", "uploadFiles");
 
@@ -45,20 +48,45 @@ router.get("/", (req, res) => {
 router.post("/upload", upload.array("files"), (req, res, next) => {
   // req.files is array of `photos` files
   // req.body will contain the text fields, if there were any
-
   // console.log(req.files)
-  for (let i = 0; i < req.files.length; i++) {
-    const newFile = new Files({
-      fileName: req.files[i].filename,
-      originalName: req.files[i].originalname,
-      mimetype: req.files[i].mimetype,
-      size: req.files[i].size
-    });
-    newFile
+  console.log("hahahahahaahah", req.body.sendTo);
+  let files = [];
+  if (req.files) {
+    const newFileModel = new Files();
+    for (let i = 0; i < req.files.length; i++) {
+      const newFiles = {
+        fileName: req.files[i].filename,
+        originalName: req.files[i].originalname,
+        mimetype: req.files[i].mimetype,
+        size: req.files[i].size
+      };
+      newFileModel.files.unshift(newFiles);
+      files.push(newFiles);
+    }
+    newFileModel
       .save()
       .then(file => {
-        console.log('success!')
-        return res.status(200).json(newFile);
+        console.log(file);
+        // return res.json(file);
+      })
+      .catch(error => {
+        return res.json(error);
+      });
+  }
+
+  if (req.body && files.length > 0) {
+    // Adding File Details to the database
+    const newFileDetails = new FileDetails({
+      from: req.body.from,
+      to: req.body.sendTo,
+      message: req.body.message,
+      files: files
+    });
+    newFileDetails
+      .save()
+      .then(details => {
+        console.log(details);
+        return res.status(200).json(details);
       })
       .catch(error => {
         res.json(error);
