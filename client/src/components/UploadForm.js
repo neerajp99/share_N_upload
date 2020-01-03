@@ -45,19 +45,14 @@ class UploadForm extends Component {
     const files = event.target.files;
 
     Object.keys(files).forEach(key => {
-      console.log(files[key]);
+      // console.log(files[key]);
       file.push(files[key]);
     });
 
     this.setState({
       files: file
     });
-
-    // this.state.files.map((key, index) => {
-    //   console.log('jajaj')
-    // })
-
-    console.log(this.state.files);
+    // console.log(this.state.files);
   };
 
   // Delete items on click
