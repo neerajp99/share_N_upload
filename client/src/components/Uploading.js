@@ -35,7 +35,7 @@ class Uploading extends Component {
         };
       }
     }
-    // console.log(prevState.completed, "%");
+    // console.log(uploadingDetails);
 
     return {
       uploadFormData: nextProps.uploadFormData,
