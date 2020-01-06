@@ -272,3 +272,64 @@ select:focus,
 .MuiLinearProgress-colorPrimary {
   background-color: rgba(49, 91, 99, 0.64) !important;
 }
+
+/* Upload file sent css goes here */
+.fileSent {
+  background: #fff;
+  border-radius: 5px;
+  width: 30vw;
+  height: 75vh;
+  margin: 0 auto;
+  margin-top: 15%;
+}
+.fileSent_top {
+  height: 35%;
+  /* background: tomato; */
+  width: 100%;
+  position: relative;
+}
+.fileSent_bottom {
+  height: 65%;
+  /* background: blue; */
+  width: 100%;
+  position: relative;
+}
+.fileSent_heading {
+  font-family: "Nunito", serif;
+  font-weight: 500;
+  font-size: 28px;
+  text-align: center;
+  margin: 0 auto;
+  color: #283d41;
+}
+.fileSent_buttons {
+  width: 80%;
+  margin: 0 auto;
+  font-family: "Nunito", serif;
+  margin-top: 8vh;
+}
+.fileSent_buttons_back {
+  font-weight: 400;
+  border: 2px solid #283d41 !important;
+  background: #283d41 !important;
+}
+.fileSent_buttons_noback {
+  border: 2px solid #283d41 !important;
+  margin-top: 2vh !important;
+  color: #283d41 !important;
+}
+.fileSent_para {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 4vh;
+  font-family: "Nunito", serif;
+  color: #283d41;
+  font-size: 18px !important;
+}
+.fileSent_shared_link {
+  text-decoration: none !important;
+  color: #fff;
+}
+.fileSent_shared_link:hover {
+  color: #fff;
+}
