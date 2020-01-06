@@ -31,6 +31,7 @@ class UploadForm extends Component {
 
     // Return back the state to the parent component
     if (this.props.onUpload) {
+      // console.log(this.state)
       this.props.onUpload(this.state);
     }
     // When dubmit form is called, initiate the uploadFile method
@@ -119,7 +120,7 @@ class UploadForm extends Component {
               onChange={this.onChange}
             />
             <InputGroup
-              placeholder="Send To"
+              placeholder="From"
               name="from"
               value={this.state.from}
               onChange={this.onChange}
