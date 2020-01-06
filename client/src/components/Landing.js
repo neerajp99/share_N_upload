@@ -6,6 +6,7 @@ import { uploadFile } from "../upload/UploadFile";
 import Proptypes from "prop-types";
 import UploadForm from "./UploadForm";
 import Uploading from "./Uploading";
+import FileSent from "./Sent";
 
 class Landing extends Component {
   state = {
@@ -20,12 +21,22 @@ class Landing extends Component {
       case "UploadForm":
         return (
           <UploadForm
+            // When uploads starts to process
             uploading={uploadingDetails => {
-              // console.log('Details collected', uploadingDetails)
+              // console.log("Details collected", uploadingDetails);
+              let componentState = this.state.coponentState;
+              // if the upload status is success, change the contentState and form data state
+              if (uploadingDetails.type === "success") {
+                this.setState({
+                  contentState: "FileSent",
+                  uploadFormData: uploadingDetails
+                });
+              }
               this.setState({
                 uploadingDetails: uploadingDetails
               });
             }}
+            // When upload is called
             onUpload={uploadFormData => {
               // console.log("Form data to upload", uploadFormData);
               this.setState({
@@ -42,6 +53,20 @@ class Landing extends Component {
             uploadingDetails={this.state.uploadingDetails}
           />
         );
+      case "FileSent":
+        return (
+          <FileSent
+            goToUpload={value => {
+              if (value === "true") {
+                this.setState({
+                  contentState: "UploadForm"
+                });
+              }
+            }}
+            // Send the data of uploaded files from the db 
+            uploadFormData={this.state.uploadFormData}
+          />
+        );
       default:
         return (
           <UploadForm
@@ -52,7 +77,7 @@ class Landing extends Component {
               });
             }}
             onUpload={uploadFormData => {
-              // console.log("Form data to upload", uploadFormData);
+              console.log("Form data to upload", uploadFormData);
               this.setState({
                 uploadFormData: uploadFormData,
                 contentState: "Uploading"
