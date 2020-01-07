@@ -483,3 +483,6 @@ select:focus,
   -o-transition: 0.1s all ease-in-out;
   transition: 0.1s all ease-in-out;
 }
+.shareContent_button_top_link {
+  text-decoration: none !important;
+}
