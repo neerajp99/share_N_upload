@@ -4,6 +4,8 @@
   "description": "File Sharing Web Application",
   "main": "app.js",
   "dependencies": {
+    "adm-zip": "^0.4.13",
+    "archiver": "^3.1.1",
     "body-parser": "^1.19.0",
     "classnames": "^2.2.6",
     "concurrently": "^4.1.1",
