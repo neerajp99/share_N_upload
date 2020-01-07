@@ -10,7 +10,7 @@ function App() {
       {" "}
       <div className="App">
         <Route exact path="/" render={() => <Landing />} />
-        <Route exact path="/shared/:id" component={SharedContent} />
+        <Route exact path="/api/shared/:id" component={SharedContent} />
       </div>
     </Router>
   );
