@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const { version } = require("../../package.json");
 
+// Import adm-zip
+const AdmZip = require("adm-zip");
+
 // import multer for storage
 const multer = require("multer");
 const path = require("path");
@@ -94,7 +97,7 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
   }
 });
 
-// @route GET /api/appRoute/
+// @route GET /api/appRoute/download/:filename
 // @description Transfering/Downloading the file at path as an “attachment”
 // @access Public
 router.get("/download/:filename", (req, res) => {
@@ -106,6 +109,39 @@ router.get("/download/:filename", (req, res) => {
       console.log("File is downloaded!");
     }
   });
+});
+
+// @route GET /api/appRoute/download/all/:uploadId
+// @description Download all files
+// @access Public
+router.get("/download/all/:uploadId", (req, res) => {
+  FileDetails.findOne({
+    _id: req.params.uploadId
+  })
+    .then(data => {
+      // Initialize new AdmZip for zip data compression
+      const zip = new AdmZip();
+
+      // Looping over and adding each file to the AdmZip object
+      for (let i = 0; i < data.files.length; i++) {
+        // Add file path to the filePath variable
+        const filePath = path.join(storageDirectory, data.files[i].fileName);
+        zip.addLocalFile(filePath);
+      }
+      const downloadName = `${req.params.uploadId}.zip`;
+      // Create a buffer data for the files
+      const zipData = zip.toBuffer();
+
+      // Set headers
+      res.set(`Content-Type`, `application/octet-stream`);
+      res.set(`Content-Disposition`, `attachment; filename = ${downloadName} `);
+      res.set(`Content-Length`, zipData.length);
+      // zip.writeZip(downloadName)
+      res.status(200).send(zipData);
+    })
+    .catch(error => {
+      res.json(error);
+    });
 });
 
 module.exports = router;

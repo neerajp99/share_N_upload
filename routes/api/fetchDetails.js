@@ -3,7 +3,7 @@ const router = express.Router();
 const FileDetails = require("../../models/FileDetails");
 
 // @route GET /api/appRoute/
-// @description Get
+// @description Get detils of uploads
 // @access Public
 router.get("/:id", (req, res) => {
   FileDetails.findOne({
