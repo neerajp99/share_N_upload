@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import axios from 'axios'
 
 class FileSent extends Component {
+
+
   render() {
     console.log(this.props.uploadFormData);
     return (
@@ -18,7 +21,7 @@ class FileSent extends Component {
             <button className="fileSent_buttons_back btn btn-primary btn-lg btn-block">
               <Link
                 className="fileSent_shared_link"
-                to={`/shared/${this.props.uploadFormData.payload._id}`}
+                to={`/api/shared/${this.props.uploadFormData.payload._id}`}
               >
                 VIEW FILE
               </Link>
