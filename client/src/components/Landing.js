@@ -53,6 +53,8 @@ class Landing extends Component {
             uploadingDetails={this.state.uploadingDetails}
           />
         );
+
+      // Once file is sent, call FileSent
       case "FileSent":
         return (
           <FileSent
@@ -63,7 +65,7 @@ class Landing extends Component {
                 });
               }
             }}
-            // Send the data of uploaded files from the db 
+            // Send the data of uploaded files from the db
             uploadFormData={this.state.uploadFormData}
           />
         );
