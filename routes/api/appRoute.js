@@ -99,7 +99,7 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
 // @access Public
 router.get("/download/:filename", (req, res) => {
   const filePath = path.join(storageDirectory, req.params.filename);
-  return res.donwload(filePath, req.params.filename, error => {
+  return res.download(filePath, req.params.filename, error => {
     if (error) {
       return res.status(400).json(error);
     } else {
