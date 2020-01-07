@@ -7,6 +7,7 @@ const keys = require("./config/keys");
 const multer = require("multer");
 // import routes
 const appRoute = require("./routes/api/appRoute");
+const fetchDetails  = require("./routes/api/fetchDetails")
 
 // Initialise express app
 const app = express();
@@ -66,6 +67,7 @@ app.set("upload", upload);
 
 // Use routing
 app.use("/api/appRoute", appRoute);
+app.use("/api/shared", fetchDetails)
 
 // Add database connection
 const db = keys.mongoURI;
