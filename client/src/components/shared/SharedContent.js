@@ -31,7 +31,6 @@ class SharedContent extends Component {
   // Get total size of the files
   total = () => {
     // Intiialise total size as 0
-    console.log(this.state.files);
     let totalSize = 0;
     for (let i = 0; i < this.state.files.length; i++) {
       totalSize += this.state.files[i].size;
@@ -96,9 +95,16 @@ class SharedContent extends Component {
                   <ul className="shareContent_list">{items}</ul>
                 </div>
                 <div className="shareContent_buttons">
-                  <button className="shareContent_button_top btn btn-primary btn-lg btn-block">
-                    DOWNLOAD FILES
-                  </button>
+                  <a
+                    className="shareContent_button_top_link"
+                    href={`http://localhost:5010/api/appRoute/download/all/${
+                      this.props.match.params.id
+                    }`}
+                  >
+                    <button className="shareContent_button_top btn btn-primary btn-lg btn-block">
+                      DOWNLOAD FILES
+                    </button>
+                  </a>
                   <button className="shareContent_button_bottom btn btn-primary btn-lg btn-block">
                     SHARE FILES
                   </button>
