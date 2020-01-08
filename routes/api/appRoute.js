@@ -6,7 +6,7 @@ const { version } = require("../../package.json");
 const AdmZip = require("adm-zip");
 
 // Bring in sendEmail method to send email
-const sendEmail  = require("./sendEmail");
+const sendEmail = require("./sendEmail");
 
 // import multer for storage
 const multer = require("multer");
@@ -90,8 +90,8 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
     newFileDetails
       .save()
       .then(details => {
-        // console.log("DETAILS", details);
-        sendEmail(details)
+        console.log("DETAILS", details);
+
         return res.status(200).json(details);
       })
       .catch(error => {
@@ -100,9 +100,13 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
   }
 });
 
-router.post('/status', (req, res) => {
-  
-})
+// @route POST /api/appRoute/sendEmail
+// @description Sending email with the files link
+// @access Public
+
+router.post("/sendEmail", (req, res) => {
+  sendEmail(req.body.payload);
+});
 
 // @route GET /api/appRoute/download/:filename
 // @description Transfering/Downloading the file at path as an “attachment”
