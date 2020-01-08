@@ -119,19 +119,22 @@ class UploadForm extends Component {
               name="sendTo"
               value={this.state.sendTo}
               onChange={this.onChange}
+              label="Receiver's Email"
             />
             <InputGroup
               placeholder="From"
               name="from"
               value={this.state.from}
               onChange={this.onChange}
+              label="Sender's Email"
             />
             <TextAreaFieldGroup
               placeholder="What's your message?"
               name="message"
               value={this.state.message}
               onChange={this.onChange}
-              info="Tell us about your work position."
+              info="Message"
+
             />
             <button
               className="send_button btn btn-primary btn-lg btn-block"
