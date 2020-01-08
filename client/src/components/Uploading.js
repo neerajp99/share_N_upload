@@ -80,6 +80,11 @@ class Uploading extends Component {
             <button
               className="uploading_cancel_button btn btn-primary btn-lg btn-block"
               type="submit"
+              onClick={() => {
+                if (this.props.uploadCancel) {
+                  this.props.uploadCancel(true);
+                }
+              }}
             >
               CANCEL
             </button>
@@ -93,6 +98,7 @@ class Uploading extends Component {
 // Adding prop-types
 Uploading.propTypes = {
   uploadFormData: PropTypes.object,
+  uploadCancel: PropTypes.func,
   uploadingDetails: PropTypes.object
 };
 
