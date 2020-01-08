@@ -16,14 +16,14 @@ class FileSent extends Component {
             {this.props.uploadFormData.sendTo}. The link will expire in 30 days.
           </p>
           <div className="fileSent_buttons">
-            <button className="fileSent_buttons_back btn btn-primary btn-lg btn-block">
-              <Link
-                className="fileSent_shared_link"
-                to={`/api/shared/${this.props.uploadFormData.payload._id}`}
-              >
+            <Link
+              className="fileSent_shared_link"
+              to={`/api/shared/${this.props.uploadFormData.payload._id}`}
+            >
+              <button className="fileSent_buttons_back btn btn-primary btn-lg btn-block">
                 VIEW FILE
-              </Link>
-            </button>
+              </button>
+            </Link>
             <button
               className="fileSent_buttons_noback btn btn-decondary btn-lg btn-block"
               onClick={() => {
