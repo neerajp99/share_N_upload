@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const InputGroup = ({ name, value, placeholder, onChange, icon, type, id }) => {
+const InputGroup = ({ name, value, placeholder, onChange, icon, type, id, label }) => {
   return (
     <div className="form-group">
-      <small className="form-text text-left small text-muted">label</small>
+      <small className="form-text text-left small text-muted">{label}</small>
       <input
         className="form-control form-control-lg text-field input_common"
         placeholder={placeholder}
@@ -24,6 +24,7 @@ InputGroup.propTypes = {
   value: PropTypes.string.isRequired,
   icon: PropTypes.string,
   error: PropTypes.string,
+  label: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   // option: PropTypes.array.isRequired,
   type: PropTypes.string.isRequired
