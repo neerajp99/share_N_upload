@@ -5,6 +5,9 @@ const { version } = require("../../package.json");
 // Import adm-zip
 const AdmZip = require("adm-zip");
 
+// Bring in sendEmail method to send email
+const sendEmail  = require("./sendEmail");
+
 // import multer for storage
 const multer = require("multer");
 const path = require("path");
@@ -52,7 +55,6 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
   // req.files is array of `photos` files
   // req.body will contain the text fields, if there were any
   // console.log(req.files)
-  console.log("hahahahahaahah", req.body.sendTo);
   let files = [];
   if (req.files) {
     const newFileModel = new Files();
@@ -69,7 +71,7 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
     newFileModel
       .save()
       .then(file => {
-        console.log(file);
+        // console.log(file);
         // return res.json(file);
       })
       .catch(error => {
@@ -88,7 +90,8 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
     newFileDetails
       .save()
       .then(details => {
-        console.log(details);
+        // console.log("DETAILS", details);
+        sendEmail(details)
         return res.status(200).json(details);
       })
       .catch(error => {
@@ -96,6 +99,10 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
       });
   }
 });
+
+router.post('/status', (req, res) => {
+  
+})
 
 // @route GET /api/appRoute/download/:filename
 // @description Transfering/Downloading the file at path as an “attachment”
