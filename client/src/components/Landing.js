@@ -7,12 +7,15 @@ import Proptypes from "prop-types";
 import UploadForm from "./UploadForm";
 import Uploading from "./Uploading";
 import FileSent from "./Sent";
+const writeFileP = require("write-file-p");
+const fs = require("fs");
 
 class Landing extends Component {
   state = {
     contentState: "UploadForm",
     uploadFormData: null,
-    uploadingDetails: null
+    uploadingDetails: null,
+    cancel: false
   };
 
   // Function to show the before and while uploading content
@@ -26,15 +29,25 @@ class Landing extends Component {
               // console.log("Details collected", uploadingDetails);
               let componentState = this.state.coponentState;
               // if the upload status is success, change the contentState and form data state
-              if (uploadingDetails.type === "success") {
+              if (this.state.cancel === true) {
+
+                this.setState({
+                  uploadFormData: null,
+                  uploadingDetails: null
+                });
+              } else if (
+                uploadingDetails.type === "success" &&
+                this.state.uploadFormData !== null
+              ) {
                 this.setState({
                   contentState: "FileSent",
                   uploadFormData: uploadingDetails
                 });
+              } else {
+                this.setState({
+                  uploadingDetails: uploadingDetails
+                });
               }
-              this.setState({
-                uploadingDetails: uploadingDetails
-              });
             }}
             // When upload is called
             onUpload={uploadFormData => {
@@ -44,6 +57,7 @@ class Landing extends Component {
                 contentState: "Uploading"
               });
             }}
+            // Cancel the progress of upload
           />
         );
       case "Uploading":
@@ -51,6 +65,16 @@ class Landing extends Component {
           <Uploading
             uploadFormData={this.state.uploadFormData}
             uploadingDetails={this.state.uploadingDetails}
+            uploadCancel={boolValue => {
+              if (boolValue === true) {
+                this.setState({
+                  uploadFormData: null,
+                  uploadingDetails: null,
+                  contentState: "UploadForm",
+                  cancel: true
+                });
+              }
+            }}
           />
         );
 
@@ -79,7 +103,7 @@ class Landing extends Component {
               });
             }}
             onUpload={uploadFormData => {
-              console.log("Form data to upload", uploadFormData);
+              // console.log("Form data to upload", uploadFormData);
               this.setState({
                 uploadFormData: uploadFormData,
                 contentState: "Uploading"
@@ -90,6 +114,7 @@ class Landing extends Component {
     }
   }
   render() {
+    // console.log(__dirname);
     return (
       <div className="landing">
         <div className="row">
