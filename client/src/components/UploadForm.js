@@ -34,11 +34,12 @@ class UploadForm extends Component {
       // console.log(this.state)
       this.props.onUpload(this.state);
     }
+
     // When dubmit form is called, initiate the uploadFile method
     uploadFile(this.state, callback => {
       // console.log("Upload callback", callback);
       if (this.props.uploading) {
-        this.props.uploading(callback);
+        this.props.uploading(callback)
       }
     });
   };
