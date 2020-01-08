@@ -90,6 +90,7 @@
   background-color: transparent;
   height: 40vh;
   flex-direction: column;
+  margin-top: 4%;
 }
 .landing_form {
   max-width: 30vw !important;
@@ -306,12 +307,13 @@ select:focus,
   width: 80%;
   margin: 0 auto;
   font-family: "Nunito", serif;
-  margin-top: 8vh;
+  margin-top: 6vh;
 }
 .fileSent_buttons_back {
   font-weight: 400;
   border: 2px solid #283d41 !important;
   background: #283d41 !important;
+  margin-top: 2vh !important;
 }
 .fileSent_buttons_noback {
   border: 2px solid #283d41 !important;
