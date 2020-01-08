@@ -8,9 +8,8 @@ sendEmail = (post, callback = () => {}) => {
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
-      user: "apikey", // generated ethereal user
-      pass:
-        "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" // generated ethereal password
+      user: "generated user id", // generated ethereal user
+      pass: "your genererated password" // generated ethereal password
     }
   });
 
