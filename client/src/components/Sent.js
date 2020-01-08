@@ -12,8 +12,8 @@ class FileSent extends Component {
         <div className="fileSent_bottom">
           <h4 className="fileSent_heading">Files sent!</h4>
           <p className="fileSent_para">
-            An email with the download link has been sent to{" "}
-            {this.props.uploadFormData.sendTo}. The link will expire in 30 days.
+            Files have been updated successfully. You can view the link or share
+            it via email. The link expires in 30 days.
           </p>
           <div className="fileSent_buttons">
             <Link
@@ -24,6 +24,21 @@ class FileSent extends Component {
                 VIEW FILE
               </button>
             </Link>
+            <button
+              className="fileSent_buttons_back btn btn-primary btn-lg btn-block"
+              onClick={() => {
+                axios
+                  .post("api/appRoute/sendEmail", this.props.uploadFormData)
+                  .then(data => {
+                    console.log("DATA", data);
+                  })
+                  .catch(error => {
+                    console.log(error);
+                  });
+              }}
+            >
+              SHARE VIA EMAIL
+            </button>
             <button
               className="fileSent_buttons_noback btn btn-decondary btn-lg btn-block"
               onClick={() => {
