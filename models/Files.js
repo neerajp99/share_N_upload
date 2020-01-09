@@ -24,6 +24,14 @@ const fileSchema = new Schema({
       created: {
         type: Date,
         default: Date.now()
+      },
+      location: {
+        type: String,
+        required: true
+      },
+      etag: {
+        type: String,
+        required: true
       }
     }
   ]
