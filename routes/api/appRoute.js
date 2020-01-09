@@ -12,31 +12,93 @@ const sendEmail = require("./sendEmail");
 const multer = require("multer");
 const path = require("path");
 
+// import multer s3 bucket
+const multerS3 = require("multer-s3");
+
+// import shortid for random characters for image name
+const shortid = require("shortid");
+
 // Bring in File Model
 const Files = require("../../models/Files");
 
 // Bring in FileDetails Model
 const FileDetails = require("../../models/FileDetails");
 
-//Multer storage directory
-const storageDirectory = path.join(__dirname, "..", "uploadFiles");
+//###########################################
+//###########################################
+// AWS S3 settings STARTS
+//###########################################
+//###########################################
 
-// Multer - File Storage configuration
-// The disk storage engine gives you full control on storing files to disk.
-// For info https://github.com/expressjs/multer#diskstorage
+// Bring in amazon web services sdk
+const AWS = require("aws-sdk");
 
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, storageDirectory);
-  },
-  filename: (req, file, cb) => {
-    // returns the extension of a file path.
-    // for more info: https://github.com/expressjs/multer#api
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
+// Set properties using the update method
+AWS.config.update({
+  accessKeyId: "AKIAWRWIFFXMIUS7HV5T",
+  secretAccessKey: "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"
 });
-// add the destination to multer
-const upload = multer({ storage: storage });
+
+// Set the region
+// AWS.config.region = 'us-east-2'
+AWS.config.update({ region: "us-east-2" });
+
+// Create S3 service object
+let s3 = new AWS.S3({ apiVersion: "2006-03-01" });
+
+// add the multer-s3 method
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: "vortex-fileapp",
+    metadata: (req, file, cb) => {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: (req, file, cb) => {
+      const generatedString = shortid.generate()
+      const filename = `${generatedString}-${file.originalname}`
+      cb(null, filename);
+    }
+  })
+});
+
+//###########################################
+//###########################################
+// AWS S3 settings ENDS
+//###########################################
+//###########################################
+
+//################################################
+//################################################
+// For storing to local path, uncomment the below
+//################################################
+//################################################
+
+// //Multer storage directory
+// const storageDirectory = path.join(__dirname, "..", "uploadFiles");
+//
+// // Multer - File Storage configuration
+// // The disk storage engine gives you full control on storing files to disk.
+// // For info https://github.com/expressjs/multer#diskstorage
+//
+// const storage = multer.diskStorage({
+//   destination: function(req, file, cb) {
+//     cb(null, storageDirectory);
+//   },
+//   filename: (req, file, cb) => {
+//     // returns the extension of a file path.
+//     // for more info: https://github.com/expressjs/multer#api
+//     cb(null, Date.now() + path.extname(file.originalname));
+//   }
+// });
+// // add the destination to multer
+// const upload = multer({ storage: storage });
+
+//################################################
+//################################################
+// Local Path storage function ends
+//################################################
+//################################################
 
 // @route GET /api/appRoute/
 // @description Get
@@ -52,18 +114,21 @@ router.get("/", (req, res) => {
 // @description Post
 // @access Public
 router.post("/upload", upload.array("files"), (req, res, next) => {
+  // console.log(files)
   // req.files is array of `photos` files
   // req.body will contain the text fields, if there were any
-  // console.log(req.files)
+  console.log(req.files)
   let files = [];
   if (req.files) {
     const newFileModel = new Files();
     for (let i = 0; i < req.files.length; i++) {
       const newFiles = {
-        fileName: req.files[i].filename,
+        fileName: req.files[i].key,
         originalName: req.files[i].originalname,
         mimetype: req.files[i].mimetype,
-        size: req.files[i].size
+        size: req.files[i].size,
+        location: req.files[i].location,
+        etag: req.files[i].etag
       };
       newFileModel.files.unshift(newFiles);
       files.push(newFiles);
