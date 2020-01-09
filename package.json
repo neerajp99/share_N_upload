@@ -6,17 +6,22 @@
   "dependencies": {
     "adm-zip": "^0.4.13",
     "archiver": "^3.1.1",
+    "aws-sdk": "^2.600.0",
     "body-parser": "^1.19.0",
     "classnames": "^2.2.6",
     "concurrently": "^4.1.1",
     "cors": "^2.8.5",
     "create-react-app": "^3.3.0",
     "express": "^4.17.1",
+    "gridfs-stream": "^1.1.1",
     "mongoose": "^5.8.1",
     "multer": "^1.4.2",
+    "multer-gridfs-storage": "^4.0.1",
+    "multer-s3": "^2.9.0",
     "nodemailer": "^6.4.2",
     "nodemon": "^2.0.2",
-    "passport": "^0.4.1"
+    "passport": "^0.4.1",
+    "shortid": "^2.2.15"
   },
   "devDependencies": {},
   "scripts": {
