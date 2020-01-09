@@ -4,6 +4,7 @@ const { version } = require("../../package.json");
 
 // Import adm-zip
 const AdmZip = require("adm-zip");
+const archiver = require("archiver");
 
 // Bring in sendEmail method to send email
 const sendEmail = require("./sendEmail");
@@ -25,9 +26,7 @@ const Files = require("../../models/Files");
 const FileDetails = require("../../models/FileDetails");
 
 //###########################################
-//###########################################
 // AWS S3 settings STARTS
-//###########################################
 //###########################################
 
 // Bring in amazon web services sdk
@@ -35,8 +34,8 @@ const AWS = require("aws-sdk");
 
 // Set properties using the update method
 AWS.config.update({
-  accessKeyId: "",
-  secretAccessKey: ""
+  accessKeyId: "AKIAWRWIFFXMIUS7HV5T",
+  secretAccessKey: "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"
 });
 
 // Set the region
@@ -55,23 +54,19 @@ const upload = multer({
       cb(null, { fieldName: file.fieldname });
     },
     key: (req, file, cb) => {
-      const generatedString = shortid.generate()
-      const filename = `${generatedString}-${file.originalname}`
+      const generatedString = shortid.generate();
+      const filename = `${generatedString}-${file.originalname}`;
       cb(null, filename);
     }
   })
 });
 
 //###########################################
-//###########################################
 // AWS S3 settings ENDS
-//###########################################
 //###########################################
 
 //################################################
-//################################################
 // For storing to local path, uncomment the below
-//################################################
 //################################################
 
 // //Multer storage directory
@@ -95,10 +90,10 @@ const upload = multer({
 // const upload = multer({ storage: storage });
 
 //################################################
-//################################################
 // Local Path storage function ends
 //################################################
-//################################################
+
+//*************************  ROUTE GOES HERE  *****************************
 
 // @route GET /api/appRoute/
 // @description Get
@@ -110,6 +105,8 @@ router.get("/", (req, res) => {
   });
 });
 
+//*************************  ROUTE GOES HERE  *****************************
+
 // @route POST /api/appRoute/
 // @description Post
 // @access Public
@@ -117,7 +114,7 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
   // console.log(files)
   // req.files is array of `photos` files
   // req.body will contain the text fields, if there were any
-  console.log(req.files)
+  console.log(req.files);
   let files = [];
   if (req.files) {
     const newFileModel = new Files();
@@ -165,6 +162,8 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
   }
 });
 
+//*************************  ROUTE GOES HERE  *****************************
+
 // @route POST /api/appRoute/sendEmail
 // @description Sending email with the files link
 // @access Public
@@ -173,19 +172,53 @@ router.post("/sendEmail", (req, res) => {
   sendEmail(req.body.payload);
 });
 
+//*************************  ROUTE GOES HERE  *****************************
+
 // @route GET /api/appRoute/download/:filename
 // @description Transfering/Downloading the file at path as an “attachment”
 // @access Public
 router.get("/download/:filename", (req, res) => {
-  const filePath = path.join(storageDirectory, req.params.filename);
-  return res.download(filePath, req.params.filename, error => {
-    if (error) {
-      return res.status(400).json(error);
-    } else {
-      console.log("File is downloaded!");
-    }
-  });
+  //#################################################################
+  // **STARTS** Downloading a single file from the file directory
+  //#################################################################
+  // const filePath = path.join(storageDirectory, req.params.filename);
+  // return res.download(filePath, req.params.filename, error => {
+  //   if (error) {
+  //     return res.status(400).json(error);
+  //   } else {
+  //     console.log("File is downloaded!");
+  //   }
+  // });
+  //#################################################################
+  // **END** Downloading a single file from the file directory
+  //#################################################################
+
+  //#################################################################
+  // **STARTS** Downloading a single file from the S3 bucket
+  //#################################################################
+
+  // file name to download
+  const fileName = req.params.filename;
+
+  // Add content disposition header for attachment in HTTP
+  res.attachment(fileName);
+
+  // Create an parameters object to pass to s3
+  const params = {
+    Bucket: "vortex-fileapp",
+    Key: fileName
+  };
+
+  // Create a readable stream from the s3 bucket object
+  const fileObject = s3.getObject(params).createReadStream();
+  // Pipe the readstream to the response object (for the client)
+  fileObject.pipe(res);
 });
+//#################################################################
+// **ENDS** Downloading a single file from the S3 bucket
+//#################################################################
+
+//*************************  ROUTE GOES HERE  *****************************
 
 // @route GET /api/appRoute/download/all/:uploadId
 // @description Download all files
@@ -195,25 +228,48 @@ router.get("/download/all/:uploadId", (req, res) => {
     _id: req.params.uploadId
   })
     .then(data => {
-      // Initialize new AdmZip for zip data compression
-      const zip = new AdmZip();
+      // Initialize new AdmZip for zip data compression (use wither adm zip or archiver)
+      // const zip = new AdmZip();
+      const zip = archiver("zip");
 
+      //*************************
+      // Type 1
+      res.attachment(`${req.params.uploadId}.zip`);
+      zip.pipe(res);
+      //*************************
       // Looping over and adding each file to the AdmZip object
       for (let i = 0; i < data.files.length; i++) {
-        // Add file path to the filePath variable
-        const filePath = path.join(storageDirectory, data.files[i].fileName);
-        zip.addLocalFile(filePath);
-      }
-      const downloadName = `${req.params.uploadId}.zip`;
-      // Create a buffer data for the files
-      const zipData = zip.toBuffer();
+        //*************************
+        // // Add file path to the filePath variable (for downloading on local server)
+        // const filePath = path.join(storageDirectory, data.files[i].fileName);
+        // zip.addLocalFile(filePath);
+        //*************************
 
-      // Set headers
-      res.set(`Content-Type`, `application/octet-stream`);
-      res.set(`Content-Disposition`, `attachment; filename = ${downloadName} `);
-      res.set(`Content-Length`, zipData.length);
-      // zip.writeZip(downloadName)
-      res.status(200).send(zipData);
+        // Add file path to the filePath variable (for downloading from aws s3 server)
+        // file name to download
+        const fileName = data.files[i].fileName;
+        // Create an parameters object to pass to s3
+        const params = {
+          Bucket: "vortex-fileapp",
+          Key: fileName
+        };
+        // Create a readable stream from the s3 bucket object
+        const fileObject = s3.getObject(params).createReadStream();
+        zip.append(fileObject, { name: fileName });
+      }
+
+      // // Type 2 (use either 1 or 2)
+      // const downloadName = `${req.params.uploadId}.zip`;
+      // // Create a buffer data for the files
+      // const zipData = zip.toBuffer();
+      // // Set headers for HTTP content disposition
+      // res.set(`Content-Type`, `application/octet-stream`);
+      // res.set(`Content-Disposition`, `attachment; filename = ${downloadName} `);
+      // res.set(`Content-Length`, zipData.length);
+      // // zip.writeZip(downloadName)
+      // res.status(200).send(zipData);
+
+      zip.finalize();
     })
     .catch(error => {
       res.json(error);
