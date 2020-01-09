@@ -488,3 +488,15 @@ select:focus,
 .shareContent_button_top_link {
   text-decoration: none !important;
 }
+
+/* Validation errors */
+.form-error-text {
+  display: block;
+  text-align: left !important;
+  font-size: 14px !important;
+  color: red !important;
+  margin-top: 5px !important;
+}
+#error-css{
+  border: 1.5px solid red !important;
+}
