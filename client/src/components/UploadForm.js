@@ -5,12 +5,18 @@ import PropTypes from "prop-types";
 import TextAreaFieldGroup from "./common/TextAreaFieldGroup";
 import { uploadFile } from "../upload/UploadFile";
 
+// Bring in upload form validation
+import validateUploadForm from "../validation/uploadForm";
+
 class UploadForm extends Component {
   state = {
     sendTo: "",
     from: "",
     message: "",
-    files: []
+    files: [],
+    fromError: null,
+    sendToError: null,
+    fileError: null
   };
 
   // lifecycle Method
@@ -28,20 +34,46 @@ class UploadForm extends Component {
   // On Submit method to submit the form
   onSubmit = event => {
     event.preventDefault();
+    // Form content
+    const error = {};
+    const formContent = {
+      from: event.target.from.value,
+      sendTo: event.target.sendTo.value,
+      message: event.target.message.value
+    };
 
-    // Return back the state to the parent component
-    if (this.props.onUpload) {
-      // console.log(this.state)
-      this.props.onUpload(this.state);
-    }
+    const { errors, isValid } = validateUploadForm(formContent);
 
-    // When dubmit form is called, initiate the uploadFile method
-    uploadFile(this.state, callback => {
-      // console.log("Upload callback", callback);
-      if (this.props.uploading) {
-        this.props.uploading(callback)
+    if (!isValid) {
+      console.log(this.state.files.length);
+      if (this.state.files.length > 0) {
+        this.setState({
+          fromError: errors.from,
+          sendToError: errors.sendTo,
+          fileError: null
+        });
+      } else {
+        this.setState({
+          fromError: errors.from,
+          sendToError: errors.sendTo,
+          fileError: "* Please upload file(s) to proceed."
+        });
       }
-    });
+    } else {
+      // Return back the state to the parent component
+      if (this.props.onUpload) {
+        // console.log(this.state)
+        this.props.onUpload(this.state);
+      }
+
+      // When dubmit form is called, initiate the uploadFile method
+      uploadFile(this.state, callback => {
+        // console.log("Upload callback", callback);
+        if (this.props.uploading) {
+          this.props.uploading(callback);
+        }
+      });
+    }
   };
 
   // Method when file is added
@@ -71,6 +103,7 @@ class UploadForm extends Component {
     console.log(this.state);
   };
   render() {
+    const { fileError } = this.state;
     const items = Object.keys(this.state.files).map((key, index) => (
       <div className="upload_files_selected_content" key={key}>
         <div className="upload_files_selected_content_name">
@@ -112,6 +145,11 @@ class UploadForm extends Component {
                 )}
               </label>
             </div>
+            {this.state.fileError !== null && (
+              <small className="form-error-text text-left">
+                {this.state.fileError}
+              </small>
+            )}
           </div>
           <div className="main_form_bottom">
             <InputGroup
@@ -120,6 +158,8 @@ class UploadForm extends Component {
               value={this.state.sendTo}
               onChange={this.onChange}
               label="Receiver's Email"
+              error={this.state.sendToError}
+              id={this.state.errorCss}
             />
             <InputGroup
               placeholder="From"
@@ -127,6 +167,7 @@ class UploadForm extends Component {
               value={this.state.from}
               onChange={this.onChange}
               label="Sender's Email"
+              error={this.state.fromError}
             />
             <TextAreaFieldGroup
               placeholder="What's your message?"
@@ -134,13 +175,12 @@ class UploadForm extends Component {
               value={this.state.message}
               onChange={this.onChange}
               info="Message"
-
             />
             <button
               className="send_button btn btn-primary btn-lg btn-block"
               type="submit"
             >
-              Send
+              Proceed
             </button>
           </div>
         </form>
