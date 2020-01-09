@@ -1,7 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const InputGroup = ({ name, value, placeholder, onChange, icon, type, id, label }) => {
+const InputGroup = ({
+  name,
+  value,
+  placeholder,
+  onChange,
+  icon,
+  type,
+  id,
+  label,
+  error
+}) => {
   return (
     <div className="form-group">
       <small className="form-text text-left small text-muted">{label}</small>
@@ -12,8 +22,9 @@ const InputGroup = ({ name, value, placeholder, onChange, icon, type, id, label 
         value={value}
         onChange={onChange}
         type={type}
-        id={id}
+        id={error ? "error-css" : ""}
       />
+      {error && <small className="form-error-text text-left">{error}</small>}
     </div>
   );
 };
@@ -27,7 +38,8 @@ InputGroup.propTypes = {
   label: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   // option: PropTypes.array.isRequired,
-  type: PropTypes.string.isRequired
+  type: PropTypes.string.isRequired,
+  error: PropTypes.object
 };
 
 InputGroup.defaultProps = {
