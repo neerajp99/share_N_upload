@@ -8,12 +8,21 @@ const multer = require("multer");
 // import routes
 const appRoute = require("./routes/api/appRoute");
 const fetchDetails = require("./routes/api/fetchDetails");
+const users = require("./routes/api/users");
 
 // Initialise express app
 const app = express();
 
 // Bring in cors
 const cors = require("cors");
+
+// Bring in passport
+const passport = require("passport");
+
+// Adding passport middleware
+app.use(passport.initialize());
+// Configuration for passport
+require("./config/passport")(passport);
 
 // Add body-parser middleware to get body details
 app.use(
@@ -68,6 +77,7 @@ app.set("upload", upload);
 // Use routing
 app.use("/api/appRoute", appRoute);
 app.use("/api/shared", fetchDetails);
+app.use("/api/users", users);
 
 // Add database connection
 const db = keys.mongoURI;
