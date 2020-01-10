@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 import TextField from "../common/TextField";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { loginUser } from "../../actions/authActions";
+import PropTypes from "prop-types";
 
 class Login extends Component {
   state = {
@@ -9,21 +13,21 @@ class Login extends Component {
     errors: {}
   };
 
-  // componentDidMount() {
-  //   if (this.props.auth.isAuthenticated) {
-  //     this.props.history.push("/dashboard");
-  //   }
-  // }
-  //
-  // UNSAFE_componentWillReceiveProps(nextProps) {
-  //   if (nextProps.auth.isAuthenticated) {
-  //     this.props.history.push("/dashboard");
-  //   }
-  //
-  //   if (nextProps.errors) {
-  //     this.setState({ errors: nextProps.errors });
-  //   }
-  // }
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/");
+    }
+  }
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/");
+    }
+
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
 
   onChange = event => {
     this.setState({
@@ -83,6 +87,17 @@ class Login extends Component {
   }
 }
 
+// Add prop-types
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
 
+const mapStateToProps = state => ({
+  auth: state.auth
+});
 
-export default Login
+export default connect(
+  mapStateToProps,
+  { loginUser }
+)(withRouter(Login));
