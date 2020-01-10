@@ -34,8 +34,8 @@ const AWS = require("aws-sdk");
 
 // Set properties using the update method
 AWS.config.update({
-  accessKeyId: "AKIAWRWIFFXMIUS7HV5T",
-  secretAccessKey: "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"
+  accessKeyId: "",
+  secretAccessKey: ""
 });
 
 // Set the region
