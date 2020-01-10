@@ -500,3 +500,50 @@ select:focus,
 #error-css{
   border: 1.5px solid red !important;
 }
+/* Register Page CSS goes here */
+.register,
+.login {
+  margin-top: 10%;
+  margin-bottom: 5%;
+}
+
+.register_heading,
+.login_heading {
+  font-family: "Nunito", sans-serif;
+  color: #524c4c;
+}
+
+.text-field {
+  /* max-width: 85%; */
+  margin: 0 auto;
+  margin-top: 3%;
+  border: none !important;
+  border-bottom: 2px solid #9c9c9c !important;
+  border-radius: 0px !important;
+}
+
+.register_form,
+.login_form {
+  position: relative;
+  margin-top: 8%;
+}
+.register_button,
+.login_button {
+  background-color: #283d41 !important;
+  border-color: #283d41 !important;
+  height: 50px;
+  font-size: 1.2em !important;
+  font-family: "Nunito", sans-serif !important;
+  font-weight: 600 !important;
+  border-radius: 0px !important;
+}
+.already_line {
+  margin-top: 4%;
+  font-family: "Nunito", sans-serif !important;
+  font-weight: 400 !important;
+}
+
+.already_line > span > a {
+  text-decoration: none !important;
+  color: #283d41;
+}
