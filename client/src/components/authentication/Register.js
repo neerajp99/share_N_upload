@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import TextField from "../common/TextField";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { registerUser } from "../../actions/authActions";
 
 class Register extends Component {
   state = {
@@ -11,25 +14,25 @@ class Register extends Component {
     password2: "",
     errors: {}
   };
-  // componentDidMount() {
-  //   if (this.props.auth.isAuthenticated) {
-  //     this.props.history.push("/dashboard");
-  //   }
-  // }
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/");
+    }
+  }
 
-  // UNSAFE_componentWillReceiveProps(nextProps) {
-  //   if (nextProps.errors) {
-  //     this.setState({ errors: nextProps.errors });
-  //   }
-  // }
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
 
   onSubmit = event => {
     event.preventDefault();
     const newUser = {
       name: this.state.name,
       email: this.state.email,
-      // password: this.state.password,
-      password2: this.state.password2
+      password: this.state.password,
+      // password2: this.state.password2
     };
     this.props.registerUser(newUser, this.props.history);
   };
@@ -41,12 +44,12 @@ class Register extends Component {
   };
   render() {
     const { errors } = this.state;
-    console.log('kaka')
+    console.log("kaka");
     return (
       <div className="container">
         <div className="register container">
           <div className="row justify-content-center">
-            <div class="col-8 center_text m-auto">
+            <div className="col-8 center_text m-auto">
               <h1 className="register_heading display-5 text-center">
                 {" "}
                 Create Account
@@ -108,4 +111,18 @@ class Register extends Component {
   }
 }
 
-export default Register;
+// Add prop-types
+Register.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
+
+// Add mapStateToProps
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(withRouter(Register));
