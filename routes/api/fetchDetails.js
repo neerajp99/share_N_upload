@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const FileDetails = require("../../models/FileDetails");
 
-// @route GET /api/appRoute/
+// @route GET /api/fetchDetails/
 // @description Get detils of uploads
 // @access Public
 router.get("/:id", (req, res) => {
