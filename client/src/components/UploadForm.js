@@ -43,8 +43,9 @@ class UploadForm extends Component {
     };
 
     const { errors, isValid } = validateUploadForm(formContent);
+    const isEmpty = require("../validation/is-empty");
 
-    if (!isValid) {
+    if (!isValid || isEmpty(this.state.files)) {
       console.log(this.state.files.length);
       if (this.state.files.length > 0) {
         this.setState({

@@ -39,7 +39,7 @@ InputGroup.propTypes = {
   onChange: PropTypes.func.isRequired,
   // option: PropTypes.array.isRequired,
   type: PropTypes.string.isRequired,
-  error: PropTypes.object
+  error: PropTypes.string
 };
 
 InputGroup.defaultProps = {
