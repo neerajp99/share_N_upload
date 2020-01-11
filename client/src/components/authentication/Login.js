@@ -4,13 +4,16 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
 import PropTypes from "prop-types";
+import validateLoginForm from "../../validation/loginForm";
 
 class Login extends Component {
   state = {
     email: "",
     password: "",
     hidden: true,
-    errors: {}
+    errors: {},
+    emailError: null,
+    passwordError: null
   };
 
   componentDidMount() {
@@ -41,11 +44,20 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password
     };
-    this.props.loginUser(user, this.props.history);
+    const { isValid, errors } = validateLoginForm(user);
+    if (!isValid) {
+      this.setState({
+        emailError: errors.email,
+        passwordError: errors.password
+      });
+    } else {
+      this.props.loginUser(user, this.props.history);
+    }
   };
   render() {
+    const { emailError, passwordError } = this.state;
     return (
-      <div className="container">
+      <div className="container login_home">
         <div className="login container">
           <div className="row justify-content-center">
             <div className="col-8 center_text m-auto">
@@ -63,6 +75,7 @@ class Login extends Component {
                     value={this.state.email}
                     onChange={this.onChange}
                     label="Email Address"
+                    error={emailError}
                   />
                   <TextField
                     placeholder="ex: password12345"
@@ -71,6 +84,7 @@ class Login extends Component {
                     value={this.state.password}
                     onChange={this.onChange}
                     label="Password"
+                    error={passwordError}
                   />
 
                   <input
