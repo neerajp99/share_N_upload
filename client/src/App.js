@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Landing from "./components/Landing";
 import SharedContent from "./components/shared/SharedContent";
 import Register from "./components/authentication/Register";
@@ -10,6 +10,9 @@ import store from "./store";
 import setAuthToken from "./utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
+import Uploads from "./components/uploadContent/Uploads";
+import ProtectedRoute from "./utils/protectedRoute";
+import NotFound from "./components/common/NotFound.js"
 
 // Check if the user is already present in localstorage
 // if yes, then authenticate the user
@@ -36,10 +39,15 @@ function App() {
       <Router>
         {" "}
         <div className="App">
-          <Route exact path="/" render={() => <Landing />} />
-          <Route exact path="/api/shared/:id" component={SharedContent} />
-          <Route exact path="/register" render={() => <Register />} />
-          <Route exact path="/login" component={Login} />
+          <Switch>
+            <Route exact path="/" render={() => <Landing />} />
+            <Route exact path="/api/shared/:id" component={SharedContent} />
+            <Route exact path="/register" render={() => <Register />} />
+            <Route exact path="/login" component={Login} />
+
+            <ProtectedRoute exact path="/uploads" component={Uploads} />
+            <Route path="*" component={NotFound} />
+          </Switch>
         </div>
       </Router>
     </Provider>
