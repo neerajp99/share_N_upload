@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { registerUser } from "../../actions/authActions";
+// Bring in validation
+import validateRegisterForm from "../../validation/registerForm";
 
 class Register extends Component {
   state = {
@@ -12,7 +14,11 @@ class Register extends Component {
     email: "",
     password: "",
     password2: "",
-    errors: {}
+    errors: {},
+    nameError: null,
+    emailError: null,
+    passwordError: null,
+    password2Error: null
   };
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
@@ -32,9 +38,20 @@ class Register extends Component {
       name: this.state.name,
       email: this.state.email,
       password: this.state.password,
-      // password2: this.state.password2
+      password2: this.state.password2
     };
-    this.props.registerUser(newUser, this.props.history);
+    const { isValid, errors } = validateRegisterForm(newUser);
+    if (!isValid) {
+      console.log(errors);
+      this.setState({
+        nameError: errors.name,
+        emailError: errors.email,
+        passwordError: errors.password,
+        password2Error: errors.password2
+      });
+    } else {
+      this.props.registerUser(newUser, this.props.history);
+    }
   };
 
   onChange = event => {
@@ -43,8 +60,7 @@ class Register extends Component {
     });
   };
   render() {
-    const { errors } = this.state;
-    console.log("kaka");
+    const { nameError, emailError, passwordError, password2Error } = this.state;
     return (
       <div className="container">
         <div className="register container">
@@ -66,6 +82,7 @@ class Register extends Component {
                     value={this.state.name}
                     onChange={this.onChange}
                     label="Full Name"
+                    error={nameError}
                   />
                   <TextField
                     placeholder="ex: tanuj.sood@gmail.com"
@@ -74,6 +91,7 @@ class Register extends Component {
                     value={this.state.email}
                     onChange={this.onChange}
                     label="Email Address"
+                    error={emailError}
                   />
                   <TextField
                     placeholder="ex: password12345"
@@ -82,6 +100,7 @@ class Register extends Component {
                     value={this.state.password}
                     onChange={this.onChange}
                     label="Password"
+                    error={passwordError}
                   />
                   <TextField
                     placeholder="ex: password12345"
@@ -90,6 +109,7 @@ class Register extends Component {
                     value={this.state.password2}
                     onChange={this.onChange}
                     label="Confirm Password"
+                    error={password2Error}
                   />
                   <input
                     type="submit"
