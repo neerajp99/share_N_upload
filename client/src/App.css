@@ -561,3 +561,57 @@ select:focus,
 #auth-error {
   border-bottom: 2px solid red !important;
 }
+
+/* navbar css goes here */
+.navbars {
+  width: 40% !important;
+  position: absolute !important;
+  right: 0 !important;
+  top: 1%;
+}
+.navbar-list {
+  display: flex;
+  flex-grow: 1;
+}
+.navbar-list-item {
+  /* flex-grow: 1; */
+  font-size: 20px;
+  font-family: "Nunito", serif;
+  color: #fff !important;
+  font-weight: 600;
+}
+.navbar-list-item:nth-child(1) {
+  flex-grow: 1 !important;
+  /* margin-left: 10% */
+}
+.navbar-list-item:nth-child(2) {
+  flex-grow: 2 !important;
+}
+a {
+  color: #fff !important;
+  position: relative;
+}
+a:hover {
+  /* background: tomato !important; */
+  text-decoration: none !important;
+}
+a:before {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 0;
+  height: 0.1rem;
+  background-color: #fff;
+}
+*,
+:after,
+:before {
+  box-sizing: border-box;
+  transition: 0.3s all ease;
+}
+a:hover:before {
+  width: 100%;
+}
