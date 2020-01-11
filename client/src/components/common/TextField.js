@@ -7,7 +7,7 @@ const TextField = ({
   value,
   type,
   onChange,
-  info,
+  error,
   label
 }) => {
   return (
@@ -20,8 +20,9 @@ const TextField = ({
         value={value}
         onChange={onChange}
         type={type}
+        id = {error ? "auth-error": ""}
       />
-      {info && <small className="form-text text-muted ">{info}</small>}
+      {error && <small className="form-text auth-error ">{error}</small>}
     </div>
   );
 };
@@ -30,7 +31,7 @@ TextField.propTypes = {
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   value: PropTypes.string.isRequired,
-  info: PropTypes.string,
+  error: PropTypes.string,
   type: PropTypes.string,
   onChange: PropTypes.func.isRequired
 };

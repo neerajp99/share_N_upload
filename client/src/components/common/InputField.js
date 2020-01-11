@@ -16,7 +16,7 @@ const InputGroup = ({
     <div className="form-group">
       <small className="form-text text-left small text-muted">{label}</small>
       <input
-        className="form-control form-control-lg text-field input_common"
+        className="form-control form-control-lg input_common"
         placeholder={placeholder}
         name={name}
         value={value}
