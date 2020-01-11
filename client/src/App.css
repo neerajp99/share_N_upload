@@ -1,6 +1,9 @@
 .App {
   text-align: center;
   overflow-x: hidden;
+  background: #f7f1e5;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .App-logo {
@@ -40,7 +43,7 @@
 
 /* Landing Page goes here */
 .landing_container {
-  background: red;
+  background: #f5efe1;
   height: 100vh;
   width: 100vh;
 }
@@ -497,7 +500,7 @@ select:focus,
   color: red !important;
   margin-top: 5px !important;
 }
-#error-css{
+#error-css {
   border: 1.5px solid red !important;
 }
 /* Register Page CSS goes here */
@@ -510,7 +513,7 @@ select:focus,
 .register_heading,
 .login_heading {
   font-family: "Nunito", sans-serif;
-  color: #524c4c;
+  color: #283d41;
 }
 
 .text-field {
@@ -518,10 +521,13 @@ select:focus,
   margin: 0 auto;
   margin-top: 3%;
   border: none !important;
-  border-bottom: 2px solid #9c9c9c !important;
+  border-bottom: 2px solid #283d41f0 !important;
   border-radius: 0px !important;
+  background: #f7f1e5 !important;
 }
 
+.login_home {
+}
 .register_form,
 .login_form {
   position: relative;
@@ -546,4 +552,12 @@ select:focus,
 .already_line > span > a {
   text-decoration: none !important;
   color: #283d41;
+}
+
+.auth-error {
+  display: flex !important;
+  color: red !important;
+}
+#auth-error {
+  border-bottom: 2px solid red !important;
 }
