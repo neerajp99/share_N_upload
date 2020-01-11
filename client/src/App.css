@@ -615,3 +615,42 @@ a:before {
 a:hover:before {
   width: 100%;
 }
+
+/* Not found page css goes here */
+.not-found{
+margin-top: 22%;
+}
+.not-found-h4{
+  font-size: 7vw !important;
+  font-weight: 600;
+  font-family: 'Nunito', serif !important;
+  color: #283d41
+
+
+}
+.not-found-h5{
+  font-size: 3vw;
+  margin-top:2%;
+  color: #283d41;
+
+}
+.go-home-button{
+  margin-top: 5%;
+  width: 25% !important;
+  height: 8vh !important;
+  border: 3px solid #283d41;
+  background: #283d41;
+  color: #fff;
+  font-size: 1.7vw;
+  font-family: 'Nunito', serif !important;
+}
+.go-home-button:hover{
+  background: transparent;
+  color: #283d41;
+  text-decoration: none;
+
+}
+
+.no-hover:hover:before{
+  width: 0% !important;
+}
