@@ -7,8 +7,7 @@ import Proptypes from "prop-types";
 import UploadForm from "./UploadForm";
 import Uploading from "./Uploading";
 import FileSent from "./Sent";
-const writeFileP = require("write-file-p");
-const fs = require("fs");
+import Navbar from "./Navbar"
 
 class Landing extends Component {
   state = {
@@ -121,7 +120,9 @@ class Landing extends Component {
           <div className="col-md-6 landing_container_left">
             {this.showUploadDetails()}
           </div>
-          <div className="col-md-6 landing_container_right" />
+          <div className="col-md-6 landing_container_right">
+          <Navbar/>
+          </div>
         </div>
       </div>
     );
