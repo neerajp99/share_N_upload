@@ -11,6 +11,7 @@ const fetchDetails = require("./routes/api/fetchDetails");
 const users = require("./routes/api/users");
 const fetchUploads = require('./routes/api/fetchUploads')
 const deleteRecords = require('./routes/api/deleteRecords')
+const downloadRecords = require("./routes/api/downloadRecords")
 
 // Initialise express app
 const app = express();
@@ -82,6 +83,7 @@ app.use("/api/shared", fetchDetails);
 app.use("/api/users", users);
 app.use("/api/fetchUploads", fetchUploads)
 app.use("/api/deleteRecords", deleteRecords)
+app.use("/api/downloadRecords", downloadRecords)
 
 // Add database connection
 const db = keys.mongoURI;
