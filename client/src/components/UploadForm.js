@@ -70,7 +70,7 @@ class UploadForm extends Component {
         // console.log(this.state)
         this.props.onUpload(this.state);
       }
-      console.log(this.state);
+      // console.log(this.state);
 
       // When dubmit form is called, initiate the uploadFile method
       uploadFile(this.state, callback => {
@@ -126,6 +126,7 @@ class UploadForm extends Component {
     ));
     return (
       <div className="uploadForm">
+
         <form className="landing_form" onSubmit={this.onSubmit}>
           <div className="main_form_top">
             <div className="upload_files_selected">{items}</div>
