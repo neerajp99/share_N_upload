@@ -217,7 +217,7 @@ select:focus,
 .uploading_heading {
   font-family: "Nunito", serif;
   font-size: 20px;
-  margin-top: 13vh;
+  margin-top: 5vh;
   color: #283d41;
   font-weight: 600;
 }
@@ -551,7 +551,7 @@ select:focus,
 
 .already_line > span > a {
   text-decoration: none !important;
-  color: #283d41;
+  color: #283d41 !important;
 }
 
 .auth-error {
@@ -757,4 +757,58 @@ a:hover:before {
 .input_common,
 .textarea_common {
   background-color: #e8e3d6 !important;
+}
+.error-output {
+  background: #f2dedd;
+  line-height: 50px;
+  font-family: "Nunito", serif;
+  color: #b96767;
+  font-size: 19px;
+  margin-bottom: 20px;
+}
+
+.uploading-icon {
+  font-size: 20vh !important;
+  color: #283d41;
+  position: relative;
+  margin-top: 20%;
+}
+.sent-icon {
+  font-size: calc(6vw + 6vh + 5vmin) !important;
+  color: #283d41;
+  position: relative;
+  margin-top: 5%;
+}
+.download-icon {
+  font-size: calc(5vw + 5vh + 4vmin) !important;
+  color: #283d41;
+  position: relative;
+  margin-top: 5%;
+}
+.emailSent-left {
+  background: #e8e3d6;
+  border-radius: 5px;
+  width: 30vw;
+  height: 75vh;
+  margin: 0 auto;
+  margin-top: 15%;
+}
+.emailSent-icon {
+  font-size: calc(6vw + 6vh + 4vmin) !important;
+  color: #283d41;
+  position: relative;
+  margin-top: 30%;
+}
+.emailSent-heading {
+  font-size: calc(1vw + 1vw + 0.5vmin);
+  font-family: "Nunito", serif;
+  margin-top: 6%;
+  color: #283d41;
+}
+.emailSent-sent {
+  height: 30vh;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 10%;
+  background: #efede7;
 }
