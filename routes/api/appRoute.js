@@ -45,6 +45,7 @@ AWS.config.update({ region: "us-east-2" });
 // Create S3 service object
 let s3 = new AWS.S3({ apiVersion: "2006-03-01" });
 
+const generatedString = shortid.generate();
 // add the multer-s3 method
 const upload = multer({
   storage: multerS3({
@@ -54,7 +55,6 @@ const upload = multer({
       cb(null, { fieldName: file.fieldname });
     },
     key: (req, file, cb) => {
-      const generatedString = shortid.generate();
       const filename = `${generatedString}-${file.originalname}`;
       cb(null, filename);
     }
@@ -114,10 +114,9 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
   // console.log(files)
   // req.files is array of `photos` files
   // req.body will contain the text fields, if there were any
-  console.log(req.files);
   let files = [];
   if (req.files) {
-    const newFileModel = new Files();
+    // const newFileModel = new Files();
     for (let i = 0; i < req.files.length; i++) {
       const newFiles = {
         fileName: req.files[i].key,
@@ -127,37 +126,96 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
         location: req.files[i].location,
         etag: req.files[i].etag
       };
-      newFileModel.files.unshift(newFiles);
+      // newFileModel.files.unshift(newFiles);
       files.push(newFiles);
     }
-    newFileModel
-      .save()
-      .then(file => {
-        // console.log(file);
-        // return res.json(file);
-      })
-      .catch(error => {
-        return res.json(error);
-      });
+    // newFileModel
+    //   .save()
+    //   .then(file => {
+    //     // console.log(file);
+    //     return res.json(file);
+    //   })
+    //   .catch(error => {
+    //     return res.json(error);
+    //   });
   }
 
   if (req.body && files.length > 0) {
     // Adding File Details to the database
-    const newFileDetails = new FileDetails({
-      from: req.body.from,
-      to: req.body.sendTo,
-      message: req.body.message,
-      files: files
-    });
-    newFileDetails
-      .save()
-      .then(details => {
-        console.log("DETAILS", details);
+    let user;
+    if (req.body.user === "undefined") {
+      user = generatedString;
+    } else {
+      user = req.body.user;
+    }
+    // Initialise a new empty file array
+    const newFiles = [];
 
-        return res.status(200).json(details);
+    // CHeck if user has uploaded something in the past
+    FileDetails.find({
+      user
+    })
+      .then(profile => {
+        if (profile.length > 0) {
+          // if user is already present, add all the files to the newly created array
+          Object.keys(profile[0].files).map(key => {
+            newFiles.push(profile[0].files[key]);
+          });
+          // Push the new files to the current file array
+          Object.keys(files).map(key => {
+            newFiles.push(files[key]);
+          });
+          // new object with the new deatils to add
+          const newFileDetails = {
+            from: req.body.from,
+            to: req.body.sendTo,
+            message: req.body.message,
+            files: newFiles,
+            user: user
+          };
+
+          // find and replace in the moongodb
+          FileDetails.findOneAndUpdate(
+            {
+              user: user
+            },
+            {
+              $set: newFileDetails
+            },
+            {
+              new: true
+            }
+          )
+            .then(details => {
+              return res.status(200).json(details);
+            })
+            .catch(error => {
+              res.json(error);
+            });
+        }
+        // if the user is not present, create one
+        else {
+          console.log("waah mdiji");
+          const newFileDetails = new FileDetails({
+            from: req.body.from,
+            to: req.body.sendTo,
+            message: req.body.message,
+            files: files,
+            user: user
+          });
+          newFileDetails
+            .save()
+            .then(details => {
+              // console.log("DETAILS", details);
+              res.status(200).json(details);
+            })
+            .catch(error => {
+              res.json(error);
+            });
+        }
       })
       .catch(error => {
-        res.json(error);
+        console.log(error);
       });
   }
 });
