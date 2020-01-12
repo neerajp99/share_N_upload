@@ -7,7 +7,7 @@ import Proptypes from "prop-types";
 import UploadForm from "./UploadForm";
 import Uploading from "./Uploading";
 import FileSent from "./Sent";
-import Navbar from "./Navbar"
+import Navbar from "./Navbar";
 
 class Landing extends Component {
   state = {
@@ -29,7 +29,6 @@ class Landing extends Component {
               let componentState = this.state.coponentState;
               // if the upload status is success, change the contentState and form data state
               if (this.state.cancel === true) {
-
                 this.setState({
                   uploadFormData: null,
                   uploadingDetails: null
@@ -121,7 +120,7 @@ class Landing extends Component {
             {this.showUploadDetails()}
           </div>
           <div className="col-md-6 landing_container_right">
-          <Navbar/>
+            <Navbar details={"Uploads"} />
           </div>
         </div>
       </div>

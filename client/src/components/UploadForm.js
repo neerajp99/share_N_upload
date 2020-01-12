@@ -4,6 +4,8 @@ import InputGroup from "./common/InputField";
 import PropTypes from "prop-types";
 import TextAreaFieldGroup from "./common/TextAreaFieldGroup";
 import { uploadFile } from "../upload/UploadFile";
+import shortid from "shortid";
+import { connect } from "react-redux";
 
 // Bring in upload form validation
 import validateUploadForm from "../validation/uploadForm";
@@ -14,6 +16,7 @@ class UploadForm extends Component {
     from: "",
     message: "",
     files: [],
+    user: this.props.auth.user.id,
     fromError: null,
     sendToError: null,
     fileError: null
@@ -44,10 +47,11 @@ class UploadForm extends Component {
 
     const { errors, isValid } = validateUploadForm(formContent);
     const isEmpty = require("../validation/is-empty");
-
+    // if there are form validation errors
     if (!isValid || isEmpty(this.state.files)) {
       console.log(this.state.files.length);
       if (this.state.files.length > 0) {
+        //Change the state with the errors
         this.setState({
           fromError: errors.from,
           sendToError: errors.sendTo,
@@ -66,6 +70,7 @@ class UploadForm extends Component {
         // console.log(this.state)
         this.props.onUpload(this.state);
       }
+      console.log(this.state);
 
       // When dubmit form is called, initiate the uploadFile method
       uploadFile(this.state, callback => {
@@ -193,7 +198,15 @@ class UploadForm extends Component {
 // Prop-types goes here
 UploadForm.propTypes = {
   onUpload: PropTypes.func,
-  uploading: PropTypes.func
+  uploading: PropTypes.func,
+  auth: PropTypes.object.isRequired
 };
 
-export default UploadForm;
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(UploadForm);

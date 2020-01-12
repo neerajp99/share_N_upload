@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 class Navbar extends Component {
   render() {
-    console.log(this.props.auth);
+    const { details } = this.props;
     return (
       <div className="container navbars navbar">
         {!this.props.auth.isAuthenticated && (
@@ -21,9 +21,16 @@ class Navbar extends Component {
         )}
         {this.props.auth.isAuthenticated && (
           <div className="navbar-list flex-container">
-            <div className="navbar-list-item">
-              <Link to="/uploads">Uploads</Link>
-            </div>
+            {details === "Home" && (
+              <div className="navbar-list-item">
+                <Link to="/">{details}</Link>
+              </div>
+            )}
+            {details === "Uploads" && (
+              <div className="navbar-list-item">
+                <Link to="/uploads">{details}</Link>
+              </div>
+            )}
             <div className="navbar-list-item">
               <a
                 href="/"
