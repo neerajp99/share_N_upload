@@ -11,15 +11,21 @@ class Login extends Component {
     email: "",
     password: "",
     hidden: true,
-    errors: {},
+    errors: null,
     emailError: null,
     passwordError: null
   };
 
   componentDidMount() {
+    console.log(this.props.error);
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/");
     }
+
+    this.setState({
+      emailError: null,
+      passwordError: null
+    });
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -27,8 +33,8 @@ class Login extends Component {
       this.props.history.push("/");
     }
 
-    if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
+    if (nextProps.error) {
+      this.setState({ errors: nextProps.error });
     }
   }
 
@@ -45,12 +51,17 @@ class Login extends Component {
       password: this.state.password
     };
     const { isValid, errors } = validateLoginForm(user);
+    console.log(errors);
     if (!isValid) {
       this.setState({
         emailError: errors.email,
         passwordError: errors.password
       });
     } else {
+      this.setState({
+        emailError: null,
+        passwordError: null
+      });
       this.props.loginUser(user, this.props.history);
     }
   };
@@ -61,6 +72,10 @@ class Login extends Component {
         <div className="login container">
           <div className="row justify-content-center">
             <div className="col-8 center_text m-auto">
+
+            {this.state.emailError === null && this.state.passwordError === null && (
+              <div className="error-output">{this.state.errors}</div>
+            )}
               <h1 className="login_heading display-5 text-center"> Login</h1>
               <div className="login_form text-center">
                 <form
@@ -104,11 +119,13 @@ class Login extends Component {
 // Add prop-types
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  error: PropTypes.object
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  error: state.error
 });
 
 export default connect(
