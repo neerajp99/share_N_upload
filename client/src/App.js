@@ -13,6 +13,7 @@ import { setCurrentUser, logoutUser } from "./actions/authActions";
 import Uploads from "./components/uploadContent/Uploads";
 import ProtectedRoute from "./utils/protectedRoute";
 import NotFound from "./components/common/NotFound.js"
+import EmailSent from "./components/EmailSent"
 
 // Check if the user is already present in localstorage
 // if yes, then authenticate the user
@@ -44,6 +45,7 @@ function App() {
             <Route exact path="/api/shared/:id" component={SharedContent} />
             <Route exact path="/register" render={() => <Register />} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/emailSent/:id" component={EmailSent} />
 
             <ProtectedRoute exact path="/uploads" component={Uploads} />
             <Route path="*" component={NotFound} />
