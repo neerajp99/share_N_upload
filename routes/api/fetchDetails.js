@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const FileDetails = require("../../models/FileDetails");
+const FilesDetails = require("../../models/FilesDetails");
 
 // @route GET /api/fetchDetails/
 // @description Get detils of uploads
 // @access Public
 router.get("/:id", (req, res) => {
-  FileDetails.findOne({
+  FilesDetails.findOne({
     _id: req.params.id
   })
     .then(data => {
@@ -14,7 +14,7 @@ router.get("/:id", (req, res) => {
       return res.status(200).json(data);
     })
     .catch(error => {
-      res.json(error);
+      return res.json(error);
     });
 });
 
