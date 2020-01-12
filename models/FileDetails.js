@@ -13,6 +13,10 @@ const FileDetailsSchema = new Schema({
   message: {
     type: String
   },
+  user: {
+    type: String,
+    required: true
+  },
   files: []
 });
 
