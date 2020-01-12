@@ -14,7 +14,7 @@ export const registerUser = (data, history) => dispatch => {
       console.log("User Registered!");
     })
     .catch(error => {
-      console.log('ERRORS', error)
+      console.log("ERRORS", error);
       dispatch({
         type: GET_ERRORS,
         payload: error.response.data
@@ -24,19 +24,27 @@ export const registerUser = (data, history) => dispatch => {
 
 // ***************** LOGIN USER *****************
 export const loginUser = (data, history) => dispatch => {
-  axios.post("/api/users/login", data).then(res => {
-    // Payload token
-    const { token } = res.data;
-    // Saving the token data to localstorage
-    localStorage.setItem("authToken", token);
+  axios
+    .post("/api/users/login", data)
+    .then(res => {
+      // Payload token
+      const { token } = res.data;
+      // Saving the token data to localstorage
+      localStorage.setItem("authToken", token);
 
-    // Set authentication token to the axios header
-    setAuthToken(token);
-    // Decode the token to access user data
-    const decodeToken = jwtDecode(token);
-    // Set the current user as authenticated
-    dispatch(setCurrentUser(decodeToken));
-  });
+      // Set authentication token to the axios header
+      setAuthToken(token);
+      // Decode the token to access user data
+      const decodeToken = jwtDecode(token);
+      // Set the current user as authenticated
+      dispatch(setCurrentUser(decodeToken));
+    })
+    .catch(error => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: error.response.data
+      });
+    });
 };
 
 // Set Auth Token function
