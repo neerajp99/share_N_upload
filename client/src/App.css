@@ -572,13 +572,14 @@ select:focus,
 .navbar-list {
   display: flex;
   flex-grow: 1;
+  /* margin-right: -30px; */
 }
 .navbar-list-item {
   /* flex-grow: 1; */
   font-size: 20px;
   font-family: "Nunito", serif;
   color: #fff !important;
-  font-weight: 600;
+  font-weight: 500;
 }
 .navbar-list-item:nth-child(1) {
   flex-grow: 1 !important;
@@ -617,24 +618,21 @@ a:hover:before {
 }
 
 /* Not found page css goes here */
-.not-found{
-margin-top: 22%;
+.not-found {
+  margin-top: 22%;
 }
-.not-found-h4{
+.not-found-h4 {
   font-size: 7vw !important;
   font-weight: 600;
-  font-family: 'Nunito', serif !important;
-  color: #283d41
-
-
-}
-.not-found-h5{
-  font-size: 3vw;
-  margin-top:2%;
+  font-family: "Nunito", serif !important;
   color: #283d41;
-
 }
-.go-home-button{
+.not-found-h5 {
+  font-size: 3vw;
+  margin-top: 2%;
+  color: #283d41;
+}
+.go-home-button {
   margin-top: 5%;
   width: 25% !important;
   height: 8vh !important;
@@ -642,15 +640,65 @@ margin-top: 22%;
   background: #283d41;
   color: #fff;
   font-size: 1.7vw;
-  font-family: 'Nunito', serif !important;
+  font-family: "Nunito", serif !important;
 }
-.go-home-button:hover{
+.go-home-button:hover {
   background: transparent;
   color: #283d41;
   text-decoration: none;
-
 }
 
-.no-hover:hover:before{
+.no-hover:hover:before {
   width: 0% !important;
+}
+
+/* My Uploads css goes here */
+.uploads_details {
+}
+.uploads_details_heading {
+  font-size: 35px;
+  text-transform: uppercase;
+  margin-top: 10%;
+  color: #283d41;
+  font-family: "Raleway", serif;
+  font-weight: 500;
+}
+.uploads_details_hr {
+  width: 35%;
+  margin: 0 auto;
+  height: 4px !important;
+  border: 0px !important;
+  background: #283d41e8;
+}
+.uploads_details_list {
+  width: 80%;
+
+  margin: 0 auto;
+  margin-top: 8%;
+  line-height: 50px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+.uploads_details_list_item {
+  display: flex;
+  margin-top: 4%;
+  background: #e8e3d6;
+}
+.uploads_details_list_item_left {
+  flex-grow: 2;
+  text-align: left;
+  padding-left: 20px;
+  font-family: "Nunito", serif;
+  color: #283d41;
+  min-width: 350px;
+}
+.uploads_details_list_item_right_first {
+  flex-grow: 1;
+  background: #283d41;
+}
+.uploads_details_list_item_right_second {
+  flex-grow: 1;
+}
+.uploads_details_list_item_right_first > i {
+  color: #fff !important;
 }
