@@ -10,7 +10,7 @@ router.get("/:id", (req, res) => {
     _id: req.params.id
   })
     .then(data => {
-      console.log(data)
+      // console.log(data)
       return res.status(200).json(data);
     })
     .catch(error => {
