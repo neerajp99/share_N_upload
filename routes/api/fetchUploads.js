@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const FilesDetails = require("../../models/FilesDetails");
+const FileDetails = require("../../models/FileDetails");
 
 // @route GET /api/fetchUploads/
 // @description Get details of all uploads by user id
 // @access Private
 router.post("/retrieve", (req, res) => {
-  FilesDetails.find({
+  FileDetails.find({
     user: req.body.user
   })
     .then(data => {
@@ -14,7 +14,7 @@ router.post("/retrieve", (req, res) => {
       return res.status(200).json(data);
     })
     .catch(error => {
-      res.json(error);
+      return res.json(error);
     });
 });
 
