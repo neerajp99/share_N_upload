@@ -98,7 +98,7 @@ class Uploads extends Component {
               <i className="fa fa-upload uploads_logo_i" aria-hidden="true" />
             </div>
             <Navbar details={"Home"} />
-            <h1 className="main_heading">Store and your share data.</h1>
+            <h1 className="main_heading">Store and share your data.</h1>
             <p className="main_para">
               Workspace designed to share and store files that matter. Sign In
               or share the files on email.
