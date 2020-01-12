@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import Background from "../../utils/img/cubes.png";
+import Background from "../../utils/img/back.png";
 import Navbar from "../Navbar";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
@@ -14,6 +14,7 @@ class SharedContent extends Component {
   };
 
   componentDidMount() {
+    console.log(this.props.match.params.id)
     axios
       .get(`/api/shared/${this.props.match.params.id}`)
       .then(data => {
@@ -78,7 +79,9 @@ class SharedContent extends Component {
         <div className="row">
           <div className="col-md-6 landing_container_left">
             <div className="shareContent_left">
-              <div className="shareContent_left_top" />
+              <div className="shareContent_left_top" >
+              <i className="fa fa-cloud-download download-icon" />
+              </div>
               <div className="shareContent_left_bottom">
                 <h4 className="shareContent_heading">Download files!</h4>
                 <div className="shareContent_items">
@@ -110,7 +113,7 @@ class SharedContent extends Component {
                     </button>
                   </a>
                   <CopyToClipboard
-                        text={`http://localhost:5010/api/shared/${this.props.match.params.id}`}
+                        text={`http://localhost:3000/api/shared/${this.props.match.params.id}`}
                         onCopy={() => this.setState({ copied: true })}
                       >
                   <button className="shareContent_button_bottom btn btn-primary btn-lg btn-block">
@@ -126,8 +129,8 @@ class SharedContent extends Component {
             <div className="uploads_logo">
               <i className="fa fa-upload uploads_logo_i" aria-hidden="true" />
             </div>
-            <Navbar details={"Uploads"} />
-            <h1 className="main_heading">Store and your share data.</h1>
+            <Navbar details={"Home"} />
+            <h1 className="main_heading">Store and share your data.</h1>
             <p className="main_para">
               Workspace designed to share and store files that matter. Sign In
               or share the files on email.
