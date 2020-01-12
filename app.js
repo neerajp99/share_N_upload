@@ -9,6 +9,8 @@ const multer = require("multer");
 const appRoute = require("./routes/api/appRoute");
 const fetchDetails = require("./routes/api/fetchDetails");
 const users = require("./routes/api/users");
+const fetchUploads = require('./routes/api/fetchUploads')
+const deleteRecords = require('./routes/api/deleteRecords')
 
 // Initialise express app
 const app = express();
@@ -78,6 +80,8 @@ app.set("upload", upload);
 app.use("/api/appRoute", appRoute);
 app.use("/api/shared", fetchDetails);
 app.use("/api/users", users);
+app.use("/api/fetchUploads", fetchUploads)
+app.use("/api/deleteRecords", deleteRecords)
 
 // Add database connection
 const db = keys.mongoURI;
