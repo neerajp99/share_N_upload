@@ -35,7 +35,8 @@ class Uploading extends Component {
         };
       }
     }
-    // console.log(uploadingDetails);
+    // console.log(prevState.dataLoaded);
+    // console.log(new Date() - prevState.newTime);
 
     return {
       uploadFormData: nextProps.uploadFormData,
@@ -43,7 +44,7 @@ class Uploading extends Component {
       currentSpeed:
         prevState.dataLoaded !== 0
           ? (prevState.dataLoaded / (new Date() - prevState.newTime)).toFixed(1)
-          : 0,
+          : 1002.3,
       totalData: currentData !== undefined ? currentData.payload.total : 0,
       dataLoaded: currentData !== undefined ? currentData.payload.loaded : 0,
       completed:
@@ -56,12 +57,17 @@ class Uploading extends Component {
   render() {
     return (
       <div className="uploading_form">
-        <img src={upload} className="image_upload" />
+
         <div className="center_items_uploading">
+        <i className="fa fa-cloud-upload uploading-icon" />
           <h5 className="uploading_heading">UPLOADING...</h5>
           <span>
             <h6 className="uploading_subheading">
-              Uploading {this.state.uploadFormData.files.length} files.
+              Uploading{" "}
+              {this.state.uploadFormData.files.length
+                ? this.state.uploadFormData.files.length
+                : 0}{" "}
+              files.
             </h6>
             <LinearProgress
               variant="determinate"
