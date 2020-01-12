@@ -42,7 +42,7 @@ export const loginUser = (data, history) => dispatch => {
     .catch(error => {
       dispatch({
         type: GET_ERRORS,
-        payload: error.response.data
+        payload: error !== undefined ? error.response.data: ""
       });
     });
 };
