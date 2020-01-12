@@ -125,7 +125,7 @@ class Landing extends Component {
             <i className="fa fa-upload uploads_logo_i" aria-hidden="true" />
           </div>
             <Navbar details={"Uploads"} />
-            <h1 className="main_heading">Store and your share data.</h1>
+            <h1 className="main_heading">Store and share your data.</h1>
             <p className="main_para">Workspace designed to share and store files that matter. Sign In or share the files on email.</p>
             <button className="main_button">Learn More</button>
             <img src={Background} alt="background" className="bg-back"/>
