@@ -49,7 +49,7 @@ router.post("/register", (req, res) => {
                 res.json(user);
               })
               .catch(error => {
-                res.json(error);
+                return res.json(error);
               });
           }
         });
@@ -71,41 +71,50 @@ router.post("/login", (req, res) => {
   // Search for the email in the database
   User.findOne({
     email: email
-  }).then(user => {
-    // If email address is not present, throw error to register user
-    if (!user) {
-      return res.status(403).json("Email address not found!");
-    }
-    // If the email address found, decrypt the password before proceeding using the bcrypt .compare function
-    bcrypt.compare(password, user.password).then(isMatch => {
-      // If the password matches
-      if (isMatch) {
-        // Create the payload for getting the Bearer tokens for authentication
-        const payload = {
-          name: user.name,
-          id: user.id
-        };
-
-        // Sign the token
-        jwt.sign(
-          payload,
-          keys.secretOrKey,
-          {
-            expiresIn: 4200
-          },
-          //callback as error and bearer token
-          (error, token) => {
-            res.json({
-              success: true,
-              token: "Bearer " + token
-            });
-          }
-        );
-      } else {
-        return res.status(400).json("Incorrect password!");
+  })
+    .then(user => {
+      // If email address is not present, throw error to register user
+      if (!user) {
+        return res.status(403).json("Email address not found!");
       }
+      // If the email address found, decrypt the password before proceeding using the bcrypt .compare function
+      bcrypt
+        .compare(password, user.password)
+        .then(isMatch => {
+          // If the password matches
+          if (isMatch) {
+            // Create the payload for getting the Bearer tokens for authentication
+            const payload = {
+              name: user.name,
+              id: user.id
+            };
+
+            // Sign the token
+            jwt.sign(
+              payload,
+              keys.secretOrKey,
+              {
+                expiresIn: 4200
+              },
+              //callback as error and bearer token
+              (error, token) => {
+                res.json({
+                  success: true,
+                  token: "Bearer " + token
+                });
+              }
+            );
+          } else {
+            return res.status(400).json("Incorrect password!");
+          }
+        })
+        .catch(error => {
+          return res.json(error);
+        });
+    })
+    .catch(error => {
+      return res.json(error);
     });
-  });
 });
 
 // ******************* ROUTE GOES HERE *******************
