@@ -17,6 +17,7 @@ export const uploadFile = (uploadForm, callback = () => {}) => {
   formdata.append("sendTo", uploadForm.sendTo);
   formdata.append("from", uploadForm.from);
   formdata.append("message", uploadForm.message);
+  formdata.append("user", uploadForm.user)
 
   // Configuration object to return payload information
   const configuration = {
