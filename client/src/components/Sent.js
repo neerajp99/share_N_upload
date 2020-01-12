@@ -1,16 +1,26 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, Redirect, withRouter } from "react-router-dom";
 import axios from "axios";
 
 class FileSent extends Component {
+  state = {
+    redirect: false,
+    id: null
+  };
   render() {
-    console.log(this.props.uploadFormData);
+    if (this.state.redirect === true) {
+      return <Redirect to={`emailSent/${this.state.id}`} />;
+    }
+
+    // console.log(this.props.uploadFormData);
     return (
       <div className="fileSent">
-        <div className="fileSent_top">llala</div>
+        <div className="fileSent_top">
+          <i className="fa fa-check-circle sent-icon" />
+        </div>
         <div className="fileSent_bottom">
-          <h4 className="fileSent_heading">Files sent!</h4>
+          <h4 className="fileSent_heading">Upload done!</h4>
           <p className="fileSent_para">
             Files have been updated successfully. You can view the link or share
             it via email. The link expires in 30 days.
@@ -30,7 +40,13 @@ class FileSent extends Component {
                 axios
                   .post("api/appRoute/sendEmail", this.props.uploadFormData)
                   .then(data => {
-                    console.log("DATA", data);
+                    // console.log(data);
+                    if (data) {
+                      this.setState({
+                        redirect: true,
+                        id: data.data.messageId
+                      });
+                    }
                   })
                   .catch(error => {
                     console.log(error);
@@ -61,4 +77,4 @@ FileSent.propTypes = {
   uploadFormData: PropTypes.object
 };
 
-export default FileSent;
+export default withRouter(FileSent);
