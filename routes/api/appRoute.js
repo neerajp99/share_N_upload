@@ -38,7 +38,6 @@ AWS.config.update({
   accessKeyId: "",
   secretAccessKey: ""
 });
-
 // Set the region
 // AWS.config.region = 'us-east-2'
 AWS.config.update({ region: "us-east-2" });
@@ -112,7 +111,7 @@ router.get("/", (req, res) => {
 // @description Post
 // @access Public
 router.post("/upload", upload.array("files"), (req, res, next) => {
-  // console.log(files)
+  // console.log(req.files);
   // req.files is array of `photos` files
   // req.body will contain the text fields, if there were any
   let files = [];
@@ -140,20 +139,40 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
     //     return res.json(error);
     //   });
   }
-
+  // Proceed only if files are added
   if (req.body && files.length > 0) {
-    // Adding File Details to the database
     let user;
     if (req.body.user === "undefined") {
       user = generatedString;
     } else {
       user = req.body.user;
     }
+    // Complete other model for temporary data to be shared
+    // console.log("FILES", files);
+    const newFilesDetails = new FilesDetails({
+      from: req.body.from,
+      to: req.body.sendTo,
+      message: req.body.message,
+      files: files,
+      user: user
+    });
+    newFilesDetails
+      .save()
+      .then(info => {
+        res.status(200).json(info);
+      })
+      .catch(err => {
+        return res.json(err);
+      });
+
+    // Adding File Details to the database
+
     // Initialise a new empty file array
     const newFiles = [];
 
     // CHeck if user has uploaded something in the past for Uploads section
-    FilesDetails.find({
+    // this section is for logged in users uploads details
+    FileDetails.find({
       user
     })
       .then(profile => {
@@ -167,7 +186,7 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
             newFiles.push(files[key]);
           });
           // new object with the new deatils to add
-          const newFilesDetails = {
+          const newFileDetails = {
             from: req.body.from,
             to: req.body.sendTo,
             message: req.body.message,
@@ -176,12 +195,12 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
           };
 
           // find and replace in the moongodb
-          FilesDetails.findOneAndUpdate(
+          FileDetails.findOneAndUpdate(
             {
               user: user
             },
             {
-              $set: newFilesDetails
+              $set: newFileDetails
             },
             {
               new: true
@@ -196,14 +215,14 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
         }
         // if the user is not present, create one
         else {
-          const newFilesDetails = new FilesDetails({
+          const newFileDetails = new FileDetails({
             from: req.body.from,
             to: req.body.sendTo,
             message: req.body.message,
             files: files,
             user: user
           });
-          newFilesDetails
+          newFileDetails
             .save()
             .then(details => {
               // console.log("DETAILS", details);
@@ -217,23 +236,6 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
       .catch(error => {
         return res.json(error);
       });
-
-    // Complete other model for temporary data
-    const newFileDetails = new FileDetails({
-      from: req.body.from,
-      to: req.body.sendTo,
-      message: req.body.message,
-      files: files,
-      user: user
-    });
-    newFileDetails
-      .save()
-      .then(info => {
-        res.status(200).json(info);
-      })
-      .catch(err => {
-        return res.json(err);
-      });
   }
 });
 
@@ -244,7 +246,9 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
 // @access Public
 
 router.post("/sendEmail", (req, res) => {
-  sendEmail(req.body.payload);
+  sendEmail(req.body.payload, (error, info) => {
+    return res.status(200).json(info)
+  });
 });
 
 //*************************  ROUTE GOES HERE  *****************************
