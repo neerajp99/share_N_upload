@@ -24,6 +24,7 @@ const Files = require("../../models/Files");
 
 // Bring in FileDetails Model
 const FileDetails = require("../../models/FileDetails");
+const FilesDetails = require("../../models/FilesDetails");
 
 //###########################################
 // AWS S3 settings STARTS
@@ -151,8 +152,8 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
     // Initialise a new empty file array
     const newFiles = [];
 
-    // CHeck if user has uploaded something in the past
-    FileDetails.find({
+    // CHeck if user has uploaded something in the past for Uploads section
+    FilesDetails.find({
       user
     })
       .then(profile => {
@@ -166,7 +167,7 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
             newFiles.push(files[key]);
           });
           // new object with the new deatils to add
-          const newFileDetails = {
+          const newFilesDetails = {
             from: req.body.from,
             to: req.body.sendTo,
             message: req.body.message,
@@ -175,39 +176,38 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
           };
 
           // find and replace in the moongodb
-          FileDetails.findOneAndUpdate(
+          FilesDetails.findOneAndUpdate(
             {
               user: user
             },
             {
-              $set: newFileDetails
+              $set: newFilesDetails
             },
             {
               new: true
             }
           )
             .then(details => {
-              return res.status(200).json(details);
+              // res.status(200).json(details);
             })
             .catch(error => {
-              res.json(error);
+              return resjson(error);
             });
         }
         // if the user is not present, create one
         else {
-          console.log("waah mdiji");
-          const newFileDetails = new FileDetails({
+          const newFilesDetails = new FilesDetails({
             from: req.body.from,
             to: req.body.sendTo,
             message: req.body.message,
             files: files,
             user: user
           });
-          newFileDetails
+          newFilesDetails
             .save()
             .then(details => {
               // console.log("DETAILS", details);
-              res.status(200).json(details);
+              // res.status(200).json(details);
             })
             .catch(error => {
               res.json(error);
@@ -215,7 +215,24 @@ router.post("/upload", upload.array("files"), (req, res, next) => {
         }
       })
       .catch(error => {
-        console.log(error);
+        return res.json(error);
+      });
+
+    // Complete other model for temporary data
+    const newFileDetails = new FileDetails({
+      from: req.body.from,
+      to: req.body.sendTo,
+      message: req.body.message,
+      files: files,
+      user: user
+    });
+    newFileDetails
+      .save()
+      .then(info => {
+        res.status(200).json(info);
+      })
+      .catch(err => {
+        return res.json(err);
       });
   }
 });
@@ -330,7 +347,7 @@ router.get("/download/all/:uploadId", (req, res) => {
       zip.finalize();
     })
     .catch(error => {
-      res.json(error);
+      return res.json(error);
     });
 });
 
