@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const FilesDetails = require("../../models/FilesDetails");
+const FileDetails = require("../../models/FileDetails");
 
 // Bring in amazon web services sdk
 const AWS = require("aws-sdk");
@@ -22,7 +22,7 @@ let s3 = new AWS.S3({ apiVersion: "2006-03-01" });
 // @description Delete a specific record from both db and s3 bucket
 // @access Private
 router.post("/", (req, res) => {
-  FilesDetails.find({
+  FileDetails.find({
     user: req.body.user
   })
     .then(profile => {
