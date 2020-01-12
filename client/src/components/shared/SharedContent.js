@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Background from "../../utils/img/cubes.png";
+import Navbar from "../Navbar";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 class SharedContent extends Component {
   state = {
@@ -46,6 +49,7 @@ class SharedContent extends Component {
     axios
       .get(`/api/appRoute/download/${filename}`)
       .then(res => {
+        console.log(res);
         res.download(res.data);
         console.log("File dowloaded!");
       })
@@ -105,14 +109,32 @@ class SharedContent extends Component {
                       DOWNLOAD FILES
                     </button>
                   </a>
+                  <CopyToClipboard
+                        text={`http://localhost:5010/api/shared/${this.props.match.params.id}`}
+                        onCopy={() => this.setState({ copied: true })}
+                      >
                   <button className="shareContent_button_bottom btn btn-primary btn-lg btn-block">
-                    SHARE FILES
+                    COPY LINK
                   </button>
+                  </CopyToClipboard>
                 </div>
               </div>
             </div>
           </div>
-          <div className="col-md-6 landing_container_right" />
+
+          <div className="col-md-6 landing_container_right">
+            <div className="uploads_logo">
+              <i className="fa fa-upload uploads_logo_i" aria-hidden="true" />
+            </div>
+            <Navbar details={"Uploads"} />
+            <h1 className="main_heading">Store and your share data.</h1>
+            <p className="main_para">
+              Workspace designed to share and store files that matter. Sign In
+              or share the files on email.
+            </p>
+            <button className="main_button">Learn More</button>
+            <img src={Background} alt="background" className="bg-back" />
+          </div>
         </div>
       </div>
     );
