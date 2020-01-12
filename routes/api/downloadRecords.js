@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const FilesDetails = require("../../models/FilesDetails");
+const FileDetails = require("../../models/FileDetails");
 
 // Bring in amazon web services sdk
 const AWS = require("aws-sdk");
