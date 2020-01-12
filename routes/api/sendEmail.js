@@ -9,7 +9,8 @@ sendEmail = (post, callback = () => {}) => {
     secure: false, // true for 465, false for other ports
     auth: {
       user: "", // generated ethereal user
-      pass: "" // generated ethereal password
+      pass:
+        "" // generated ethereal password
     }
   });
 
@@ -18,11 +19,13 @@ sendEmail = (post, callback = () => {}) => {
   const mailOptions = {
     from: post.from,
     to: post.to,
-    subject: "Someone has send you some 888 files!",
+    subject: "Someone has shared some files with you!",
     text: post.message,
     html: `<p> An email has been received from ${
       post.from
-    }. Click <a href="${downloadLink}">here</a> to download.</p>`
+    }. Click <a href="${downloadLink}">here</a> to download the files.</p><br><br>Message: ${
+      post.message
+    }`
   };
 
   transporter.sendMail(mailOptions, function(error, info) {
