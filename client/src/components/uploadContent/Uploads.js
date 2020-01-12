@@ -3,6 +3,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Navbar from "../Navbar";
+import Background from "../../utils/img/cubes.png";
 
 class Uploads extends Component {
   state = {
@@ -70,7 +71,13 @@ class Uploads extends Component {
           <i className="fa fa-lg fa-trash-o" aria-hidden="true" />
         </div>
         <div className="uploads_details_list_item_right_second">
-          <i className="fa fa-lg fa-download" aria-hidden="true" />
+          <a
+            href={`http://localhost:5010/api/downloadRecords/${
+              files[key].fileName
+            }`}
+          >
+            <i className="fa fa-lg fa-download" aria-hidden="true" />
+          </a>
         </div>
       </div>
     ));
@@ -87,7 +94,17 @@ class Uploads extends Component {
             </div>
           </div>
           <div className="col-md-6 landing_container_right">
+            <div className="uploads_logo">
+              <i className="fa fa-upload uploads_logo_i" aria-hidden="true" />
+            </div>
             <Navbar details={"Home"} />
+            <h1 className="main_heading">Store and your share data.</h1>
+            <p className="main_para">
+              Workspace designed to share and store files that matter. Sign In
+              or share the files on email.
+            </p>
+            <button className="main_button">Learn More</button>
+            <img src={Background} alt="background" className="bg-back" />
           </div>
         </div>
       </div>
