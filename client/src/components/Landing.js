@@ -8,6 +8,7 @@ import UploadForm from "./UploadForm";
 import Uploading from "./Uploading";
 import FileSent from "./Sent";
 import Navbar from "./Navbar";
+import Background from "../utils/img/cubes.png"
 
 class Landing extends Component {
   state = {
@@ -120,7 +121,14 @@ class Landing extends Component {
             {this.showUploadDetails()}
           </div>
           <div className="col-md-6 landing_container_right">
+          <div className="uploads_logo">
+            <i className="fa fa-upload uploads_logo_i" aria-hidden="true" />
+          </div>
             <Navbar details={"Uploads"} />
+            <h1 className="main_heading">Store and your share data.</h1>
+            <p className="main_para">Workspace designed to share and store files that matter. Sign In or share the files on email.</p>
+            <button className="main_button">Learn More</button>
+            <img src={Background} alt="background" className="bg-back"/>
           </div>
         </div>
       </div>
